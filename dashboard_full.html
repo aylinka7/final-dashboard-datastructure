@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pure Algorithms — Full Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5EFD8;--dark:#12121E;--dark2:#1A1A2E;--dark3:#0F0F1A;
+  --r1:#FF6B6B;--r2:#FF9F43;--r3:#FECA57;--r4:#48DBFB;--r5:#FF9FF3;--r6:#54A0FF;
+  --teal:#00D2D3;--peach:#FF9F7F;--mint:#A8E6CF;--lav:#C3B1E1;
+  --coral:#FF6B6B;--sun:#FFD93D;--pipe:#D4A574;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:var(--cream);overflow-x:hidden;cursor:none;}
+.cur{width:18px;height:18px;background:var(--sun);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s;mix-blend-mode:difference;transform:translate(-50%,-50%);}
+
+/* ── TICKER ── */
+.ticker{background:var(--sun);color:var(--dark);font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:7px 0;overflow:hidden;white-space:nowrap;}
+.ticker span{display:inline-block;animation:tick 30s linear infinite;}
+@keyframes tick{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:80px 20px 60px;}
+.hbg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,#2D1B69 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,#1A3A4A 0%,transparent 55%),var(--dark);}
+.stars{position:absolute;inset:0;pointer-events:none;}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twink 3s infinite alternate;}
+@keyframes twink{from{opacity:.15}to{opacity:.9}}
+.rain-arch{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:1000px;height:550px;pointer-events:none;}
+.hnav{position:absolute;top:55px;left:0;right:0;display:flex;justify-content:center;gap:0;z-index:10;flex-wrap:wrap;}
+.hnav a{font-family:'Space Mono',monospace;font-size:11px;color:var(--cream);text-decoration:none;opacity:.7;padding:6px 14px;transition:.2s;}
+.hnav a:hover{opacity:1;color:var(--sun);}
+.hsub{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:3px;color:var(--sun);margin-bottom:14px;position:relative;z-index:5;animation:fadeUp .8s ease both;}
+.htitle{font-family:'Righteous',cursive;font-size:clamp(58px,11vw,120px);line-height:.9;text-align:center;position:relative;z-index:5;animation:fadeUp .8s .2s ease both;}
+.htitle .l1{color:#fff;display:block;}
+.htitle .l2{display:block;background:linear-gradient(135deg,#FF6B6B,#FF9F43,#FECA57,#48DBFB,#FF9FF3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdesc{font-size:15px;opacity:.65;margin-top:18px;text-align:center;max-width:440px;position:relative;z-index:5;animation:fadeUp .8s .4s ease both;line-height:1.7;}
+.hcta{margin-top:32px;display:inline-block;background:#fff;color:var(--dark);font-family:'Space Mono',monospace;font-size:13px;font-weight:700;padding:13px 30px;border-radius:50px;text-decoration:none;position:relative;z-index:5;animation:fadeUp .8s .6s ease both;transition:.2s;cursor:none;}
+.hcta:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(255,217,61,.5);}
+.dbadge{position:absolute;top:52px;right:40px;background:var(--teal);color:var(--dark);font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:7px 16px;border-radius:50px;z-index:10;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.deco{position:absolute;pointer-events:none;}
+@keyframes fl1{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes fl2{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-11px) rotate(8deg)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ── AUTHORS ── */
+.authors{background:var(--cream);color:var(--dark);padding:14px 40px;display:flex;justify-content:center;align-items:center;gap:16px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-wrap:wrap;}
+.adot{color:var(--r1);font-size:18px;}
+
+/* ── PIPE ── */
+.pipe{display:flex;align-items:center;justify-content:center;padding:28px 20px;gap:0;overflow:hidden;}
+.pseg{height:10px;background:var(--pipe);}
+.pjoint{width:18px;height:18px;background:var(--pipe);border-radius:50%;flex-shrink:0;}
+.pacc{width:7px;height:22px;border-radius:4px;flex-shrink:0;}
+
+/* ── NAV SIDEBAR (topic nav) ── */
+.topic-nav{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;}
+.tnav-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);cursor:none;transition:.2s;position:relative;}
+.tnav-dot:hover,.tnav-dot.active{background:var(--sun);transform:scale(1.4);}
+.tnav-dot::after{content:attr(data-label);position:absolute;left:18px;top:50%;transform:translateY(-50%);background:var(--dark2);color:var(--cream);font-family:'Space Mono',monospace;font-size:10px;padding:3px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.2s;}
+.tnav-dot:hover::after{opacity:1;}
+
+/* ── SECTION SHELL ── */
+.sec{padding:80px 0;position:relative;}
+.sec-dark{background:var(--dark3);}
+.sec-mid{background:var(--dark2);}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px;}
+.slabel{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--sun);text-align:center;margin-bottom:8px;}
+.stitle{font-family:'Righteous',cursive;font-size:clamp(36px,6vw,64px);text-align:center;line-height:1;margin-bottom:48px;}
+
+/* ── TOPIC HEADER BANNER ── */
+.topic-banner{border-radius:24px;padding:36px 36px 28px;margin-bottom:32px;position:relative;overflow:hidden;}
+.tb-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;padding:5px 12px;border-radius:20px;display:inline-block;margin-bottom:12px;font-weight:700;}
+.tb-title{font-family:'Righteous',cursive;font-size:clamp(32px,5vw,52px);line-height:1;margin-bottom:10px;}
+.tb-desc{font-size:14px;line-height:1.75;opacity:.8;max-width:680px;}
+.tb-deco{position:absolute;right:32px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.12;}
+
+/* ── INFO GRID ── */
+.igrid{display:grid;gap:16px;margin-bottom:24px;}
+.igrid-2{grid-template-columns:1fr 1fr;}
+.igrid-3{grid-template-columns:1fr 1fr 1fr;}
+.igrid-4{grid-template-columns:repeat(4,1fr);}
+
+.icard{background:#151528;border-radius:18px;padding:22px;border:1.5px solid rgba(255,255,255,.07);}
+.icard-title{font-family:'Righteous',cursive;font-size:17px;margin-bottom:10px;}
+.icard-body{font-size:13px;line-height:1.75;opacity:.8;}
+
+/* ── CODE BLOCK ── */
+.codeblock{background:#0A0A14;border-radius:14px;padding:18px 20px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;border:1.5px solid rgba(255,255,255,.06);position:relative;margin:10px 0;}
+.codeblock .comment{color:#4A5568;font-style:italic;}
+.codeblock .kw{color:#FF9FF3;}
+.codeblock .fn{color:#48DBFB;}
+.codeblock .num{color:#FFD93D;}
+.codeblock .str{color:#A8E6CF;}
+.codeblock .op{color:#FF9F43;}
+.cb-label{position:absolute;top:10px;right:14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;opacity:.35;}
+
+/* ── STEP TRACE ── */
+.trace{display:flex;flex-direction:column;gap:0;}
+.trace-step{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.trace-step:last-child{border-bottom:none;}
+.trace-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.trace-content{font-size:13px;line-height:1.65;opacity:.85;}
+.trace-content strong{font-weight:700;opacity:1;}
+.trace-arr{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.ta-el{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);transition:.3s;}
+.ta-el.hi{background:rgba(255,107,107,.25);border-color:var(--coral);color:var(--coral);}
+.ta-el.cmp{background:rgba(255,217,61,.2);border-color:var(--sun);color:var(--sun);}
+.ta-el.done{background:rgba(168,230,207,.2);border-color:var(--mint);color:var(--mint);}
+.ta-el.pivot{background:rgba(255,159,243,.25);border-color:var(--lav);color:var(--lav);}
+
+/* ── COMPLEXITY BADGE ── */
+.cx{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;padding:3px 10px;border-radius:10px;margin:2px;}
+.cx-g{background:rgba(168,230,207,.15);color:var(--mint);}
+.cx-y{background:rgba(255,217,61,.15);color:var(--sun);}
+.cx-r{background:rgba(255,107,107,.15);color:var(--coral);}
+.cx-b{background:rgba(84,160,255,.15);color:#54A0FF;}
+
+/* ── PROS/CONS ── */
+.procon{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0;}
+.pros,.cons{background:#0A0A14;border-radius:12px;padding:16px;}
+.pros{border-top:2px solid var(--mint);}
+.cons{border-top:2px solid var(--coral);}
+.pc-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:10px;opacity:.6;}
+.pc-item{font-size:12px;line-height:1.6;display:flex;gap:8px;margin-bottom:6px;opacity:.8;}
+.pc-item::before{content:'→';flex-shrink:0;opacity:.5;}
+
+/* ── INTERACTIVE SORT ── */
+.sort-bars{display:flex;align-items:flex-end;gap:5px;height:150px;margin:12px 0;}
+.sbar{flex:1;border-radius:5px 5px 0 0;background:var(--teal);transition:height .35s,background .25s;min-width:18px;position:relative;}
+.sbar.cmp{background:var(--coral)!important;}
+.sbar.sorted{background:var(--mint)!important;}
+.sbar.pivot{background:var(--lav)!important;}
+.sbar span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-family:'Space Mono',monospace;opacity:.55;}
+
+/* ── STACK WIDGET ── */
+.stack-vis{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:200px;}
+.sv-item{width:180px;padding:9px 18px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;font-family:'Space Mono',monospace;font-size:12px;text-align:center;animation:svIn .25s ease;}
+@keyframes svIn{from{opacity:0;transform:scaleX(.75)}to{opacity:1;transform:scaleX(1)}}
+.sv-top{border-color:var(--teal)!important;color:var(--teal);}
+.sv-empty{opacity:.3;font-family:'Space Mono',monospace;font-size:12px;}
+
+/* ── QUEUE WIDGET ── */
+.queue-vis{display:flex;gap:6px;align-items:center;min-height:60px;flex-wrap:wrap;}
+.qv-item{padding:9px 16px;background:rgba(255,217,61,.1);border:1.5px solid var(--sun);border-radius:10px;font-family:'Space Mono',monospace;font-size:12px;color:var(--sun);animation:svIn .25s ease;}
+
+/* ── HASH TABLE ── */
+.hash-table{display:grid;gap:4px;}
+.ht-row{display:flex;gap:8px;align-items:center;}
+.ht-idx{width:32px;font-family:'Space Mono',monospace;font-size:10px;opacity:.4;text-align:right;flex-shrink:0;}
+.ht-cell{flex:1;height:34px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 12px;font-family:'Space Mono',monospace;font-size:12px;transition:.3s;}
+.ht-cell.filled{background:rgba(0,210,211,.15);border-color:var(--teal);color:var(--teal);}
+.ht-cell.collision{background:rgba(255,107,107,.15);border-color:var(--coral);color:var(--coral);}
+
+/* ── GRAPH SVG ── */
+.graph-wrap{background:#0A0A14;border-radius:18px;border:1.5px solid rgba(255,255,255,.07);overflow:hidden;}
+.graph-wrap svg{display:block;width:100%;}
+.g-node circle{cursor:none;transition:.2s;}
+.g-node circle:hover{filter:brightness(1.3);}
+.g-node text{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;pointer-events:none;}
+.g-edge{stroke:rgba(255,255,255,.2);stroke-width:2;transition:.3s;}
+.g-edge.active{stroke:var(--sun);stroke-width:3;}
+.g-edge.path{stroke:var(--coral);stroke-width:3;}
+.g-wlabel{font-family:'Space Mono',monospace;font-size:10px;fill:rgba(255,255,255,.5);}
+
+/* ── ALGO STEPS ── */
+.algo-steps{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.as-row{display:flex;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);font-size:12px;line-height:1.5;align-items:flex-start;}
+.as-row.active{background:rgba(255,217,61,.08);border-color:rgba(255,217,61,.3);}
+.as-num{font-family:'Space Mono',monospace;font-size:10px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.as-num.active{background:var(--sun);color:var(--dark);}
+
+/* ── BST SVG ── */
+.bst-wrap{background:#0A0A14;border-radius:18px;border:1.5px solid rgba(255,255,255,.07);overflow:auto;}
+
+/* ── AVL TABLE ── */
+.avl-table{width:100%;border-collapse:collapse;font-size:12px;}
+.avl-table th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;padding:10px 14px;text-align:left;color:var(--lav);border-bottom:1px solid rgba(255,255,255,.07);}
+.avl-table td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);}
+.avl-table tr:hover td{background:rgba(255,255,255,.02);}
+
+/* ── THEORY CALLOUT ── */
+.theory-box{border-radius:14px;padding:18px 20px;margin:12px 0;border-left:3px solid;}
+.tb-q{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;opacity:.5;margin-bottom:6px;text-transform:uppercase;}
+.tb-a{font-size:13px;line-height:1.7;opacity:.85;}
+
+/* ── CONTROLS ── */
+.ctrl-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0;}
+.btn{font-family:'Space Mono',monospace;font-size:11px;padding:8px 18px;border-radius:30px;border:none;cursor:none;font-weight:700;transition:.15s;}
+.btn:active{transform:scale(.96);}
+.btn-teal{background:var(--teal);color:var(--dark);}
+.btn-sun{background:var(--sun);color:var(--dark);}
+.btn-lav{background:var(--lav);color:var(--dark);}
+.btn-ghost{background:rgba(255,255,255,.08);color:var(--cream);border:1px solid rgba(255,255,255,.15);}
+.btn-coral{background:var(--coral);color:#fff;}
+.inp{font-family:'Space Mono',monospace;font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:var(--cream);padding:8px 14px;border-radius:10px;outline:none;}
+.inp:focus{border-color:var(--teal);}
+.stat-line{font-family:'Space Mono',monospace;font-size:11px;opacity:.5;align-self:center;}
+
+/* ── RPN ── */
+.rpn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.rpn-card{background:#0A0A14;border-radius:14px;padding:18px;border:1.5px solid rgba(255,255,255,.08);}
+.rpn-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;margin-bottom:10px;opacity:.5;text-transform:uppercase;}
+.rpn-expr{font-family:'Space Mono',monospace;font-size:18px;background:rgba(255,255,255,.04);padding:10px 14px;border-radius:10px;letter-spacing:2px;}
+
+/* ── COMPLEXITY FULL TABLE ── */
+.cxtable{width:100%;border-collapse:collapse;font-size:12px;}
+.cxtable th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;padding:11px 16px;text-align:left;color:var(--sun);border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,217,61,.06);}
+.cxtable td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.04);}
+.cxtable td:first-child{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);}
+.cxtable tr:hover td{background:rgba(255,255,255,.02);}
+
+/* ── FOOTER ── */
+.footer{background:var(--cream);color:var(--dark);padding:60px 40px 40px;position:relative;overflow:hidden;}
+.footer-title{font-family:'Righteous',cursive;font-size:56px;line-height:1;margin-bottom:4px;}
+.footer-sub{font-family:'Space Mono',monospace;font-size:12px;opacity:.5;margin-top:4px;}
+.footer-names{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;margin-top:18px;opacity:.7;}
+.footer-date{font-family:'Space Mono',monospace;font-size:11px;opacity:.45;margin-top:6px;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px;}
+
+@media(max-width:768px){
+  .igrid-2,.igrid-3,.igrid-4,.rpn-grid,.procon{grid-template-columns:1fr;}
+  .topic-nav{display:none;}
+  .htitle{font-size:52px;}
+}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+
+<!-- TICKER -->
+<div class="ticker"><span>★ Searching ★ Linear & Binary Search ★ Sorting: Bubble · Selection · Insertion · Merge · Heap · Radix · Counting ★ Stack: Polish / RPN / Evaluation ★ Queue & Circular Queue ★ Linked Lists ★ Hash Functions ★ BST · AVL · Red-Black Trees ★ Graphs: BFS · DFS · Dijkstra · Bellman-Ford · Floyd-Warshall ★ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hbg"></div>
+  <div class="stars" id="stars"></div>
+  <svg class="rain-arch" viewBox="0 0 1000 550" fill="none">
+    <path d="M0,550 Q500,-120 1000,550" stroke="#FF6B6B" stroke-width="20" fill="none" opacity=".65"/>
+    <path d="M35,550 Q500,-85 965,550" stroke="#FF9F43" stroke-width="19" fill="none" opacity=".65"/>
+    <path d="M70,550 Q500,-45 930,550" stroke="#FECA57" stroke-width="17" fill="none" opacity=".6"/>
+    <path d="M100,550 Q500,-5 900,550" stroke="#48DBFB" stroke-width="14" fill="none" opacity=".55"/>
+    <path d="M128,550 Q500,32 872,550" stroke="#FF9FF3" stroke-width="13" fill="none" opacity=".5"/>
+    <path d="M154,550 Q500,65 846,550" stroke="#54A0FF" stroke-width="11" fill="none" opacity=".45"/>
+  </svg>
+  <nav class="hnav">
+    <a href="#sec-search">Searching</a><a href="#sec-sort">Sorting</a><a href="#sec-stack">Stacks</a>
+    <a href="#sec-queue">Queues</a><a href="#sec-ll">Linked Lists</a><a href="#sec-hash">Hashing</a>
+    <a href="#sec-trees">Trees</a><a href="#sec-graphs">Graphs</a>
+  </nav>
+  <div class="dbadge">📅 28 · 04 · 2026</div>
+  <!-- Moon -->
+  <div class="deco" style="top:110px;left:70px;font-size:58px;animation:fl1 6s ease-in-out infinite;">🌕</div>
+  <!-- Flower -->
+  <svg class="deco" style="top:170px;right:90px;width:72px;animation:fl2 5s ease-in-out infinite;" viewBox="0 0 100 120">
+    <circle cx="50" cy="22" r="11" fill="white"/><circle cx="50" cy="58" r="11" fill="white"/>
+    <circle cx="34" cy="32" r="11" fill="white"/><circle cx="66" cy="32" r="11" fill="white"/>
+    <circle cx="34" cy="48" r="11" fill="white"/><circle cx="66" cy="48" r="11" fill="white"/>
+    <circle cx="50" cy="40" r="15" fill="#FFD93D" opacity=".95"/>
+    <circle cx="50" cy="40" r="9" fill="#FF9F43"/>
+    <rect x="47" y="54" width="6" height="42" fill="#A8E6CF" rx="3"/>
+    <ellipse cx="38" cy="82" rx="14" ry="8" fill="#A8E6CF" transform="rotate(-30 38 82)"/>
+  </svg>
+  <!-- Gears -->
+  <svg class="deco" style="bottom:190px;left:44px;width:54px;animation:spin 22s linear infinite;opacity:.35;" viewBox="0 0 60 60">
+    <circle cx="30" cy="30" r="16" fill="none" stroke="#D4A574" stroke-width="4"/>
+    <circle cx="30" cy="30" r="7" fill="#D4A574"/>
+    <rect x="27" y="4" width="6" height="11" rx="3" fill="#D4A574"/>
+    <rect x="27" y="45" width="6" height="11" rx="3" fill="#D4A574"/>
+    <rect x="4" y="27" width="11" height="6" rx="3" fill="#D4A574"/>
+    <rect x="45" y="27" width="11" height="6" rx="3" fill="#D4A574"/>
+  </svg>
+  <svg class="deco" style="bottom:155px;left:86px;width:34px;animation:spin 14s linear infinite reverse;opacity:.35;" viewBox="0 0 60 60">
+    <circle cx="30" cy="30" r="16" fill="none" stroke="#A8E6CF" stroke-width="4"/>
+    <circle cx="30" cy="30" r="7" fill="#A8E6CF"/>
+    <rect x="27" y="4" width="6" height="11" rx="3" fill="#A8E6CF"/>
+    <rect x="27" y="45" width="6" height="11" rx="3" fill="#A8E6CF"/>
+    <rect x="4" y="27" width="11" height="6" rx="3" fill="#A8E6CF"/>
+    <rect x="45" y="27" width="11" height="6" rx="3" fill="#A8E6CF"/>
+  </svg>
+  <div class="hsub">COMPUTER SCIENCE · DATA STRUCTURES & ALGORITHMS</div>
+  <h1 class="htitle"><span class="l1">Pure</span><span class="l2">Algorithms</span></h1>
+  <p class="hdesc">A deep-dive dashboard through every topic — theory, step-by-step traces, complexity analysis, and interactive demos. Built to impress.</p>
+  <a href="#sec-search" class="hcta">Start exploring ↓</a>
+</section>
+
+<!-- AUTHORS -->
+<div class="authors">
+  <span>Created by</span><span class="adot">✦</span>
+  <span>Adylova Ailin</span><span class="adot">&amp;</span>
+  <span>Adinai Temirbekova</span><span class="adot">✦</span>
+  <span>Data Structures Dashboard · 2026</span>
+</div>
+
+<!-- PIPE -->
+<div class="pipe">
+  <div class="pjoint"></div>
+  <div class="pseg" style="width:80px"></div>
+  <div class="pacc" style="background:var(--teal)"></div>
+  <div class="pseg" style="width:160px"></div>
+  <div class="pjoint"></div>
+  <div class="pseg" style="flex:1"></div>
+  <div class="pacc" style="background:var(--coral)"></div>
+  <div class="pseg" style="flex:1"></div>
+  <div class="pjoint"></div>
+  <div class="pseg" style="width:160px"></div>
+  <div class="pacc" style="background:var(--sun)"></div>
+  <div class="pseg" style="width:80px"></div>
+  <div class="pjoint"></div>
+</div>
+
+<!-- TOPIC NAV -->
+<div class="topic-nav" id="tnav">
+  <div class="tnav-dot" data-id="sec-search" data-label="Searching"></div>
+  <div class="tnav-dot" data-id="sec-sort" data-label="Sorting"></div>
+  <div class="tnav-dot" data-id="sec-stack" data-label="Stacks"></div>
+  <div class="tnav-dot" data-id="sec-queue" data-label="Queues"></div>
+  <div class="tnav-dot" data-id="sec-ll" data-label="Linked Lists"></div>
+  <div class="tnav-dot" data-id="sec-hash" data-label="Hashing"></div>
+  <div class="tnav-dot" data-id="sec-trees" data-label="Trees"></div>
+  <div class="tnav-dot" data-id="sec-graphs" data-label="Graphs"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1. SEARCHING
+══════════════════════════════════════════ -->
+<section class="sec sec-dark" id="sec-search">
+<div class="wrap">
+  <div class="slabel">TOPIC 01</div>
+  <h2 class="stitle">🔍 <span style="color:var(--r6)">Searching</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#0D3B6E,#0A1A3E);border:2px solid rgba(84,160,255,.3)">
+    <span class="tb-tag" style="background:rgba(84,160,255,.2);color:#54A0FF">SEARCHING ALGORITHMS</span>
+    <div class="tb-title" style="color:#54A0FF">Finding elements in data</div>
+    <div class="tb-desc">Searching is the process of locating a specific element in a collection. The two fundamental approaches are <strong>Linear Search</strong> (brute-force, works on any array) and <strong>Binary Search</strong> (divide-and-conquer, requires sorted data).</div>
+    <div class="tb-deco">🔍</div>
+  </div>
+
+  <!-- LINEAR SEARCH -->
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(84,160,255,.25)">
+      <div class="icard-title" style="color:#54A0FF">Linear Search</div>
+      <div class="icard-body">Scans every element from left to right until the target is found or the array is exhausted. <strong>No pre-sorting required.</strong> Best for small or unsorted datasets.<br><br>
+        <strong>Complexity:</strong><br>
+        <span class="cx cx-g">Best O(1)</span><span class="cx cx-y">Average O(n)</span><span class="cx cx-r">Worst O(n)</span><span class="cx cx-g">Space O(1)</span>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(84,160,255,.25)">
+      <div class="icard-title" style="color:#54A0FF">Algorithm Pseudocode</div>
+      <div class="codeblock">
+        <span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">linearSearch</span>(arr, target):
+  <span class="kw">for</span> i = <span class="num">0</span> <span class="kw">to</span> arr.length - <span class="num">1</span>:
+    <span class="kw">if</span> arr[i] == target:
+      <span class="kw">return</span> i        <span class="comment">// found at index i</span>
+  <span class="kw">return</span> -<span class="num">1</span>           <span class="comment">// not found</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="icard" style="margin-bottom:24px">
+    <div class="icard-title" style="color:#54A0FF">Step-by-Step Example — find <span style="color:var(--sun)">73</span> in array</div>
+    <div class="trace">
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(84,160,255,.2);color:#54A0FF">1</div>
+        <div class="trace-content">Check index 0 → value <strong>12</strong>. 12 ≠ 73. Continue.
+          <div class="trace-arr"><div class="ta-el hi">12</div><div class="ta-el">45</div><div class="ta-el">7</div><div class="ta-el">73</div><div class="ta-el">91</div><div class="ta-el">3</div><div class="ta-el">28</div></div>
+        </div>
+      </div>
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(84,160,255,.2);color:#54A0FF">2</div>
+        <div class="trace-content">Check index 1 → value <strong>45</strong>. 45 ≠ 73. Continue.
+          <div class="trace-arr"><div class="ta-el done">12</div><div class="ta-el hi">45</div><div class="ta-el">7</div><div class="ta-el">73</div><div class="ta-el">91</div><div class="ta-el">3</div><div class="ta-el">28</div></div>
+        </div>
+      </div>
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(84,160,255,.2);color:#54A0FF">3</div>
+        <div class="trace-content">Check index 2 → value <strong>7</strong>. 7 ≠ 73. Continue.
+          <div class="trace-arr"><div class="ta-el done">12</div><div class="ta-el done">45</div><div class="ta-el hi">7</div><div class="ta-el">73</div><div class="ta-el">91</div><div class="ta-el">3</div><div class="ta-el">28</div></div>
+        </div>
+      </div>
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(168,230,207,.3);color:var(--mint)">4</div>
+        <div class="trace-content">Check index 3 → value <strong style="color:var(--mint)">73</strong>. 73 == 73 ✓ <strong>FOUND at index 3!</strong>
+          <div class="trace-arr"><div class="ta-el done">12</div><div class="ta-el done">45</div><div class="ta-el done">7</div><div class="ta-el done" style="border-color:var(--mint);color:var(--mint)">73</div><div class="ta-el">91</div><div class="ta-el">3</div><div class="ta-el">28</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BINARY SEARCH -->
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(0,210,211,.25)">
+      <div class="icard-title" style="color:var(--teal)">Binary Search</div>
+      <div class="icard-body">Divide array in half each time. Compare mid-element with target — if smaller go left, if larger go right. Eliminates <strong>half the search space</strong> each step. <em>Requires sorted array.</em><br><br>
+        <span class="cx cx-g">Best O(1)</span><span class="cx cx-b">Average O(log n)</span><span class="cx cx-b">Worst O(log n)</span><span class="cx cx-g">Space O(1)</span>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(0,210,211,.25)">
+      <div class="icard-title" style="color:var(--teal)">Pseudocode</div>
+      <div class="codeblock"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">binarySearch</span>(arr, target):
+  left = <span class="num">0</span>,  right = arr.length - <span class="num">1</span>
+  <span class="kw">while</span> left &lt;= right:
+    mid = (left + right) / <span class="num">2</span>
+    <span class="kw">if</span> arr[mid] == target:  <span class="kw">return</span> mid
+    <span class="kw">else if</span> arr[mid] &lt; target: left = mid + <span class="num">1</span>
+    <span class="kw">else</span>:                  right = mid - <span class="num">1</span>
+  <span class="kw">return</span> -<span class="num">1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="icard" style="margin-bottom:24px">
+    <div class="icard-title" style="color:var(--teal)">Step-by-Step — find <span style="color:var(--sun)">55</span> in sorted array</div>
+    <div class="trace">
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(0,210,211,.2);color:var(--teal)">1</div>
+        <div class="trace-content"><strong>left=0, right=8, mid=4</strong> → arr[4]=<strong>42</strong>. 42 &lt; 55, so move left = mid+1 = 5.
+          <div class="trace-arr"><div class="ta-el">5</div><div class="ta-el">12</div><div class="ta-el">23</div><div class="ta-el">35</div><div class="ta-el cmp">42</div><div class="ta-el">55</div><div class="ta-el">67</div><div class="ta-el">78</div><div class="ta-el">90</div></div>
+        </div>
+      </div>
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(0,210,211,.2);color:var(--teal)">2</div>
+        <div class="trace-content"><strong>left=5, right=8, mid=6</strong> → arr[6]=<strong>67</strong>. 67 &gt; 55, so move right = mid-1 = 5.
+          <div class="trace-arr"><div class="ta-el" style="opacity:.3">5</div><div class="ta-el" style="opacity:.3">12</div><div class="ta-el" style="opacity:.3">23</div><div class="ta-el" style="opacity:.3">35</div><div class="ta-el" style="opacity:.3">42</div><div class="ta-el">55</div><div class="ta-el cmp">67</div><div class="ta-el">78</div><div class="ta-el">90</div></div>
+        </div>
+      </div>
+      <div class="trace-step">
+        <div class="trace-num" style="background:rgba(168,230,207,.3);color:var(--mint)">3</div>
+        <div class="trace-content"><strong>left=5, right=5, mid=5</strong> → arr[5]=<strong style="color:var(--mint)">55</strong>. 55 == 55 ✓ <strong>FOUND at index 5!</strong> Only 3 comparisons vs 6 for linear.
+          <div class="trace-arr"><div class="ta-el" style="opacity:.3">5</div><div class="ta-el" style="opacity:.3">12</div><div class="ta-el" style="opacity:.3">23</div><div class="ta-el" style="opacity:.3">35</div><div class="ta-el" style="opacity:.3">42</div><div class="ta-el done">55</div><div class="ta-el" style="opacity:.3">67</div><div class="ta-el" style="opacity:.3">78</div><div class="ta-el" style="opacity:.3">90</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="igrid igrid-2">
+    <div class="theory-box" style="background:rgba(84,160,255,.07);border-color:#54A0FF">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:#54A0FF;font-size:14px;margin-bottom:6px">Why does Binary Search need sorted data?</div>
+      <div class="tb-a">Because the algorithm decides to go left or right based on comparison with mid. If the array is unsorted, "less than mid" does NOT mean "element is in left half" — so the logic breaks completely.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(0,210,211,.07);border-color:var(--teal)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--teal);font-size:14px;margin-bottom:6px">When to use Linear vs Binary?</div>
+      <div class="tb-a">Use <strong>Linear</strong> when data is unsorted, very small, or stored in a linked list. Use <strong>Binary</strong> when data is sorted and stored in an array/structure that allows O(1) random access by index.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     2. SORTING
+══════════════════════════════════════════ -->
+<section class="sec" id="sec-sort">
+<div class="wrap">
+  <div class="slabel">TOPIC 02</div>
+  <h2 class="stitle">↕️ <span style="color:var(--coral)">Sorting</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#4A1205,#2A0A05);border:2px solid rgba(255,107,107,.35)">
+    <span class="tb-tag" style="background:rgba(255,107,107,.2);color:var(--coral)">SORTING ALGORITHMS</span>
+    <div class="tb-title" style="color:var(--coral)">Arranging data in order</div>
+    <div class="tb-desc">Sorting algorithms reorganize data in ascending or descending order. They differ by <strong>time complexity</strong>, <strong>stability</strong> (preserve equal element order), and <strong>in-place</strong> operation (O(1) extra memory).</div>
+    <div class="tb-deco">↕️</div>
+  </div>
+
+  <!-- BUBBLE -->
+  <div style="margin-bottom:32px">
+    <div class="icard" style="border-color:rgba(255,107,107,.25);margin-bottom:14px">
+      <div class="icard-title" style="color:var(--coral)">Bubble Sort <span class="cx cx-r" style="font-size:11px;vertical-align:middle">O(n²)</span></div>
+      <div class="icard-body">Repeatedly swap adjacent elements if they are in the wrong order. Each full pass "bubbles" the largest unsorted element to its correct position at the end.<br>
+      <strong>Stable ✓ &nbsp;|&nbsp; In-place ✓ &nbsp;|&nbsp; Best for: nearly sorted small arrays</strong></div>
+      <div class="codeblock" style="margin-top:12px"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">for</span> i = <span class="num">0</span> <span class="kw">to</span> n-<span class="num">1</span>:
+  <span class="kw">for</span> j = <span class="num">0</span> <span class="kw">to</span> n-i-<span class="num">2</span>:
+    <span class="kw">if</span> arr[j] &gt; arr[j+<span class="num">1</span>]:
+      swap(arr[j], arr[j+<span class="num">1</span>])   <span class="comment">// bubble up</span>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,107,107,.2)">
+      <div class="icard-title" style="color:var(--coral)">Bubble Sort — Pass 1 Trace on [64, 34, 25, 12, 22]</div>
+      <div class="trace">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.2);color:var(--coral)">1</div><div class="trace-content">Compare arr[0]=<strong>64</strong> &amp; arr[1]=<strong>34</strong>. 64&gt;34 → <strong>swap</strong>.<div class="trace-arr"><div class="ta-el cmp">64</div><div class="ta-el cmp">34</div><div class="ta-el">25</div><div class="ta-el">12</div><div class="ta-el">22</div><span style="font-size:18px;margin:auto 0">→</span><div class="ta-el hi">34</div><div class="ta-el hi">64</div><div class="ta-el">25</div><div class="ta-el">12</div><div class="ta-el">22</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.2);color:var(--coral)">2</div><div class="trace-content">Compare arr[1]=<strong>64</strong> &amp; arr[2]=<strong>25</strong>. 64&gt;25 → <strong>swap</strong>.<div class="trace-arr"><div class="ta-el done">34</div><div class="ta-el cmp">64</div><div class="ta-el cmp">25</div><div class="ta-el">12</div><div class="ta-el">22</div><span style="font-size:18px;margin:auto 0">→</span><div class="ta-el done">34</div><div class="ta-el hi">25</div><div class="ta-el hi">64</div><div class="ta-el">12</div><div class="ta-el">22</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.2);color:var(--coral)">3</div><div class="trace-content">Compare arr[2]=<strong>64</strong> &amp; arr[3]=<strong>12</strong>. 64&gt;12 → <strong>swap</strong>. Then compare 64 &amp; 22 → swap. <strong>64 is in final position!</strong><div class="trace-arr"><div class="ta-el done">34</div><div class="ta-el done">25</div><div class="ta-el done">12</div><div class="ta-el done">22</div><div class="ta-el done" style="border-color:var(--mint);color:var(--mint)">64</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SELECTION / INSERTION side by side -->
+  <div class="igrid igrid-2" style="margin-bottom:32px">
+    <div class="icard" style="border-color:rgba(255,159,67,.25)">
+      <div class="icard-title" style="color:var(--r2)">Selection Sort <span class="cx cx-r" style="font-size:10px;vertical-align:middle">O(n²)</span></div>
+      <div class="icard-body">Find the minimum element in the unsorted portion, then swap it into its correct position. Makes exactly <strong>n-1 swaps</strong> (optimal swaps for comparison sorts).<br><span style="opacity:.6;font-size:12px">Stable ✗ &nbsp;|&nbsp; In-place ✓</span></div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">for</span> i = <span class="num">0</span> <span class="kw">to</span> n-<span class="num">2</span>:
+  minIdx = i
+  <span class="kw">for</span> j = i+<span class="num">1</span> <span class="kw">to</span> n-<span class="num">1</span>:
+    <span class="kw">if</span> arr[j] &lt; arr[minIdx]:
+      minIdx = j
+  swap(arr[i], arr[minIdx])
+      </div>
+      <div class="trace" style="margin-top:10px">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,159,67,.2);color:var(--r2)">i=0</div><div class="trace-content">Find min in [<strong>29,10,14,37,13</strong>] → <strong>10</strong> at idx 1. Swap with idx 0.<div class="trace-arr"><div class="ta-el done">10</div><div class="ta-el">29</div><div class="ta-el">14</div><div class="ta-el">37</div><div class="ta-el">13</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,159,67,.2);color:var(--r2)">i=1</div><div class="trace-content">Find min in [<strong>29,14,37,13</strong>] → <strong>13</strong> at idx 4. Swap with idx 1.<div class="trace-arr"><div class="ta-el done">10</div><div class="ta-el done">13</div><div class="ta-el">14</div><div class="ta-el">37</div><div class="ta-el">29</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(168,230,207,.2);color:var(--mint)">✓</div><div class="trace-content">After 4 passes: <strong>[10, 13, 14, 29, 37]</strong> — fully sorted.<div class="trace-arr"><div class="ta-el done">10</div><div class="ta-el done">13</div><div class="ta-el done">14</div><div class="ta-el done">29</div><div class="ta-el done">37</div></div></div></div>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(195,177,225,.25)">
+      <div class="icard-title" style="color:var(--lav)">Insertion Sort <span class="cx cx-b" style="font-size:10px;vertical-align:middle">O(n) best</span></div>
+      <div class="icard-body">Build a sorted sub-array one element at a time. Take each new element and insert it into its correct position in the already-sorted left portion.<br><span style="opacity:.6;font-size:12px">Stable ✓ &nbsp;|&nbsp; In-place ✓ &nbsp;|&nbsp; Best for nearly-sorted data</span></div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">for</span> i = <span class="num">1</span> <span class="kw">to</span> n-<span class="num">1</span>:
+  key = arr[i]
+  j = i - <span class="num">1</span>
+  <span class="kw">while</span> j &gt;= <span class="num">0</span> <span class="kw">and</span> arr[j] &gt; key:
+    arr[j+<span class="num">1</span>] = arr[j]  <span class="comment">// shift right</span>
+    j = j - <span class="num">1</span>
+  arr[j+<span class="num">1</span>] = key
+      </div>
+      <div class="trace" style="margin-top:10px">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(195,177,225,.2);color:var(--lav)">i=1</div><div class="trace-content">key=<strong>8</strong>. arr[0]=12 &gt; 8 → shift. Insert 8 before 12.<div class="trace-arr"><div class="ta-el done">8</div><div class="ta-el done">12</div><div class="ta-el">5</div><div class="ta-el">1</div><div class="ta-el">6</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(195,177,225,.2);color:var(--lav)">i=2</div><div class="trace-content">key=<strong>5</strong>. Shift 12, shift 8. Insert 5 at front.<div class="trace-arr"><div class="ta-el done">5</div><div class="ta-el done">8</div><div class="ta-el done">12</div><div class="ta-el">1</div><div class="ta-el">6</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(168,230,207,.2);color:var(--mint)">✓</div><div class="trace-content">Final result: <strong>[1, 5, 6, 8, 12]</strong><div class="trace-arr"><div class="ta-el done">1</div><div class="ta-el done">5</div><div class="ta-el done">6</div><div class="ta-el done">8</div><div class="ta-el done">12</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MERGE / HEAP / RADIX / COUNTING -->
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(72,219,251,.25)">
+      <div class="icard-title" style="color:var(--r4)">Merge Sort <span class="cx cx-b" style="font-size:10px;vertical-align:middle">O(n log n)</span></div>
+      <div class="icard-body"><strong>Divide & Conquer.</strong> Recursively split array in half until single elements. Then <em>merge</em> pairs in sorted order.<br><span style="opacity:.6;font-size:12px">Stable ✓ &nbsp;|&nbsp; NOT in-place O(n) space</span></div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">mergeSort</span>(arr):
+  <span class="kw">if</span> len(arr) &lt;= <span class="num">1</span>: <span class="kw">return</span> arr
+  mid = len(arr) / <span class="num">2</span>
+  L = <span class="fn">mergeSort</span>(arr[<span class="num">0</span>..mid])
+  R = <span class="fn">mergeSort</span>(arr[mid..end])
+  <span class="kw">return</span> <span class="fn">merge</span>(L, R)
+
+<span class="kw">function</span> <span class="fn">merge</span>(L, R):
+  result = []
+  <span class="kw">while</span> L <span class="kw">and</span> R not empty:
+    <span class="kw">if</span> L[<span class="num">0</span>] &lt;= R[<span class="num">0</span>]: append L[<span class="num">0</span>]
+    <span class="kw">else</span>: append R[<span class="num">0</span>]
+  append remaining
+      </div>
+      <div style="margin-top:12px;font-size:12px;opacity:.75;line-height:1.7">
+        <strong>Split trace:</strong> [38,27,43,3] → [38,27] [43,3] → [38][27] [43][3]<br>
+        <strong>Merge trace:</strong> [27,38] [3,43] → [3,27,38,43] ✓
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,159,243,.25)">
+      <div class="icard-title" style="color:var(--r5)">Heap Sort <span class="cx cx-b" style="font-size:10px;vertical-align:middle">O(n log n)</span></div>
+      <div class="icard-body">Build a <strong>Max-Heap</strong> from the array. Repeatedly extract the maximum (root) and place it at the end, then re-heapify.<br><span style="opacity:.6;font-size:12px">Stable ✗ &nbsp;|&nbsp; In-place ✓ &nbsp;|&nbsp; Guaranteed O(n log n)</span></div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">PSEUDOCODE</span>
+<span class="comment">// Phase 1: Build Max-Heap</span>
+<span class="kw">for</span> i = n/<span class="num">2</span>-<span class="num">1</span> downto <span class="num">0</span>:
+  <span class="fn">heapify</span>(arr, n, i)
+
+<span class="comment">// Phase 2: Extract elements</span>
+<span class="kw">for</span> i = n-<span class="num">1</span> downto <span class="num">1</span>:
+  swap(arr[<span class="num">0</span>], arr[i])   <span class="comment">// put max at end</span>
+  <span class="fn">heapify</span>(arr, i, <span class="num">0</span>)    <span class="comment">// re-heapify</span>
+
+<span class="kw">function</span> <span class="fn">heapify</span>(arr, n, i):
+  largest = i
+  l = <span class="num">2</span>*i+<span class="num">1</span>, r = <span class="num">2</span>*i+<span class="num">2</span>
+  <span class="kw">if</span> l &lt; n <span class="kw">and</span> arr[l] &gt; arr[largest]: largest=l
+  <span class="kw">if</span> r &lt; n <span class="kw">and</span> arr[r] &gt; arr[largest]: largest=r
+  <span class="kw">if</span> largest != i: swap; <span class="fn">heapify</span>(arr, n, largest)
+      </div>
+    </div>
+  </div>
+
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(168,230,207,.25)">
+      <div class="icard-title" style="color:var(--mint)">Counting Sort <span class="cx cx-g" style="font-size:10px;vertical-align:middle">O(n+k)</span></div>
+      <div class="icard-body">Non-comparison sort. Count occurrences of each value, then reconstruct array using cumulative counts. Works only with <strong>integers in a known range [0..k]</strong>.<br><span style="opacity:.6;font-size:12px">Stable ✓ &nbsp;|&nbsp; Space O(n+k)</span></div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">EXAMPLE: [4,2,2,8,3,3,1]</span>
+Count array (size 9):
+idx: [<span class="num">0</span>,<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>,<span class="num">7</span>,<span class="num">8</span>]
+cnt: [<span class="num">0</span>,<span class="num">1</span>,<span class="num">2</span>,<span class="num">2</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">1</span>]
+cumulative:
+    [<span class="num">0</span>,<span class="num">1</span>,<span class="num">3</span>,<span class="num">5</span>,<span class="num">6</span>,<span class="num">6</span>,<span class="num">6</span>,<span class="num">6</span>,<span class="num">7</span>]
+Output: [<span class="num">1</span>,<span class="num">2</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">8</span>] ✓
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,217,61,.25)">
+      <div class="icard-title" style="color:var(--sun)">Radix Sort <span class="cx cx-g" style="font-size:10px;vertical-align:middle">O(d·n)</span></div>
+      <div class="icard-body">Sort digit-by-digit from <strong>least significant</strong> to most significant using a stable sort (counting sort) at each digit position. d = number of digits.<br><span style="opacity:.6;font-size:12px">Stable ✓ &nbsp;|&nbsp; Space O(n+k) &nbsp;|&nbsp; Great for large integer arrays</span></div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">EXAMPLE: [170,45,75,90,802,24,2,66]</span>
+Sort by <span class="kw">ones</span>:   [170,90,802,2,24,45,75,66]
+Sort by <span class="kw">tens</span>:   [802,2,24,45,66,170,75,90]
+Sort by <span class="kw">hundreds</span>:[2,24,45,66,75,90,170,802] ✓
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive sort viz -->
+  <div class="icard" style="border-color:rgba(255,107,107,.2)">
+    <div class="icard-title" style="color:var(--coral)">▶ Interactive Sorting Visualizer</div>
+    <div class="ctrl-row">
+      <button class="btn btn-coral" onclick="startSort('bubble')">Bubble</button>
+      <button class="btn btn-ghost" onclick="startSort('selection')">Selection</button>
+      <button class="btn btn-ghost" onclick="startSort('insertion')">Insertion</button>
+      <button class="btn btn-ghost" onclick="resetSortBars()">↺ Reset</button>
+      <span class="stat-line" id="sortStat"></span>
+    </div>
+    <div class="sort-bars" id="sortBars"></div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     3. STACK
+══════════════════════════════════════════ -->
+<section class="sec sec-dark" id="sec-stack">
+<div class="wrap">
+  <div class="slabel">TOPIC 03</div>
+  <h2 class="stitle">📚 <span style="color:var(--teal)">Stack</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#043A3A,#021A1A);border:2px solid rgba(0,210,211,.35)">
+    <span class="tb-tag" style="background:rgba(0,210,211,.2);color:var(--teal)">LIFO DATA STRUCTURE</span>
+    <div class="tb-title" style="color:var(--teal)">Last In, First Out</div>
+    <div class="tb-desc">A Stack is a linear data structure that follows the <strong>LIFO</strong> principle — the last element inserted is the first to be removed. Like a stack of plates. Core operations: <strong>push</strong> (insert), <strong>pop</strong> (remove), <strong>peek/top</strong> (view top), <strong>isEmpty</strong>.</div>
+    <div class="tb-deco">📚</div>
+  </div>
+
+  <div class="igrid igrid-3" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(0,210,211,.2)">
+      <div class="icard-title" style="color:var(--teal)">Push — O(1)</div>
+      <div class="icard-body">Insert element on top. Increment top pointer.<br>Stack: [] → push(A) → [A] → push(B) → [A,B] → push(C) → [A,B,C]</div>
+      <div class="codeblock" style="margin-top:10px"><span class="kw">function</span> <span class="fn">push</span>(stack, x):
+  stack.top++
+  stack[top] = x
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,107,107,.2)">
+      <div class="icard-title" style="color:var(--coral)">Pop — O(1)</div>
+      <div class="icard-body">Remove and return the top element. Decrement top pointer. Error if stack is empty (underflow).</div>
+      <div class="codeblock" style="margin-top:10px"><span class="kw">function</span> <span class="fn">pop</span>(stack):
+  <span class="kw">if</span> isEmpty(stack):
+    <span class="kw">raise</span> <span class="str">"Underflow"</span>
+  val = stack[top]
+  stack.top--
+  <span class="kw">return</span> val
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,217,61,.2)">
+      <div class="icard-title" style="color:var(--sun)">Peek / Top — O(1)</div>
+      <div class="icard-body">View the top element without removing it. Essential for expression evaluation and parsing.</div>
+      <div class="codeblock" style="margin-top:10px"><span class="kw">function</span> <span class="fn">peek</span>(stack):
+  <span class="kw">if</span> isEmpty(stack):
+    <span class="kw">raise</span> <span class="str">"Empty"</span>
+  <span class="kw">return</span> stack[top]
+      </div>
+    </div>
+  </div>
+
+  <!-- Polish Notation -->
+  <div style="margin-bottom:32px">
+    <div class="icard" style="border-color:rgba(195,177,225,.25);margin-bottom:16px">
+      <div class="icard-title" style="color:var(--lav)">Polish Notation — Three Forms</div>
+      <div class="rpn-grid">
+        <div class="rpn-card" style="border-color:rgba(195,177,225,.3)">
+          <div class="rpn-label" style="color:var(--lav)">Infix (Normal)</div>
+          <div class="rpn-expr">(A + B) × C</div>
+          <div style="font-size:12px;opacity:.6;margin-top:8px">Operator between operands. Requires parentheses and precedence rules.</div>
+        </div>
+        <div class="rpn-card" style="border-color:rgba(0,210,211,.3)">
+          <div class="rpn-label" style="color:var(--teal)">Prefix (Polish)</div>
+          <div class="rpn-expr">× + A B C</div>
+          <div style="font-size:12px;opacity:.6;margin-top:8px">Operator <em>before</em> operands. No parentheses needed. Evaluated right-to-left.</div>
+        </div>
+        <div class="rpn-card" style="border-color:rgba(255,107,107,.3)">
+          <div class="rpn-label" style="color:var(--coral)">Postfix (Reverse Polish)</div>
+          <div class="rpn-expr">A B + C ×</div>
+          <div style="font-size:12px;opacity:.6;margin-top:8px">Operator <em>after</em> operands. Directly evaluable with a single stack pass.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="icard" style="border-color:rgba(255,107,107,.2)">
+      <div class="icard-title" style="color:var(--coral)">Evaluating Postfix: "3 4 + 2 × 7 /" step-by-step</div>
+      <div class="trace">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">1</div><div class="trace-content">Token <strong>3</strong> → number → push. Stack: [<strong>3</strong>]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">2</div><div class="trace-content">Token <strong>4</strong> → number → push. Stack: [3, <strong>4</strong>]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">3</div><div class="trace-content">Token <strong>+</strong> → operator → pop 4, pop 3 → 3+4=<strong>7</strong> → push. Stack: [<strong>7</strong>]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">4</div><div class="trace-content">Token <strong>2</strong> → push. Stack: [7, <strong>2</strong>]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">5</div><div class="trace-content">Token <strong>×</strong> → pop 2, pop 7 → 7×2=<strong>14</strong> → push. Stack: [<strong>14</strong>]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">6</div><div class="trace-content">Token <strong>7</strong> → push. Stack: [14, <strong>7</strong>]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(168,230,207,.2);color:var(--mint)">7</div><div class="trace-content">Token <strong>/</strong> → pop 7, pop 14 → 14÷7=<strong>2</strong> → push. Stack: [<strong>2</strong>]. <strong>Result = 2 ✓</strong></div></div>
+      </div>
+    </div>
+
+    <!-- Interactive RPN -->
+    <div class="icard" style="border-color:rgba(0,210,211,.2);margin-top:14px">
+      <div class="icard-title" style="color:var(--teal)">🔢 Interactive RPN Evaluator</div>
+      <div class="ctrl-row">
+        <input class="inp" id="rpnIn" value="5 1 2 + 4 * + 3 -" style="flex:1;min-width:200px">
+        <button class="btn btn-teal" onclick="doRPN()">= Evaluate</button>
+      </div>
+      <div id="rpnOut" style="font-family:'Space Mono',monospace;font-size:14px;margin-top:10px"></div>
+      <div id="rpnTrace" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- Stack Interactive -->
+  <div class="icard" style="border-color:rgba(0,210,211,.2)">
+    <div class="icard-title" style="color:var(--teal)">▶ Live Stack Simulator</div>
+    <div class="ctrl-row">
+      <input class="inp" id="stackIn" placeholder="value" style="width:100px">
+      <button class="btn btn-teal" onclick="doPush()">Push ↑</button>
+      <button class="btn btn-coral" onclick="doPop()">Pop ↓</button>
+      <button class="btn btn-ghost" onclick="doStackReset()">↺ Clear</button>
+      <span class="stat-line" id="stackStat">Stack: empty</span>
+    </div>
+    <div class="stack-vis" id="stackVis"><div class="sv-empty">Stack is empty</div></div>
+  </div>
+
+  <div class="igrid igrid-2" style="margin-top:24px">
+    <div class="theory-box" style="background:rgba(0,210,211,.06);border-color:var(--teal)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--teal);font-size:14px;margin-bottom:6px">Why is postfix easier to evaluate than infix?</div>
+      <div class="tb-a">Infix requires knowing operator precedence (+, ×, ÷) and handling parentheses. Postfix is evaluated with a <em>single left-to-right pass</em> using a stack — no precedence rules needed at all.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(255,107,107,.06);border-color:var(--coral)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--coral);font-size:14px;margin-bottom:6px">Real-world uses of stacks?</div>
+      <div class="tb-a">Browser Back button, function call stack (recursion), undo/redo in text editors, syntax checking (matching brackets), compiler expression evaluation, DFS graph traversal.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     4. QUEUE
+══════════════════════════════════════════ -->
+<section class="sec" id="sec-queue">
+<div class="wrap">
+  <div class="slabel">TOPIC 04</div>
+  <h2 class="stitle">🚶 <span style="color:var(--sun)">Queue</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#3D2B00,#1A1200);border:2px solid rgba(255,217,61,.35)">
+    <span class="tb-tag" style="background:rgba(255,217,61,.2);color:var(--sun)">FIFO DATA STRUCTURE</span>
+    <div class="tb-title" style="color:var(--sun)">First In, First Out</div>
+    <div class="tb-desc">A Queue inserts at the <strong>rear (enqueue)</strong> and removes from the <strong>front (dequeue)</strong> — like a real-world queue/line. Variants: <em>Simple Queue</em>, <em>Circular Queue</em>, <em>Priority Queue</em>, <em>Double-Ended Queue (Deque)</em>.</div>
+    <div class="tb-deco">🚶</div>
+  </div>
+
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(255,217,61,.2)">
+      <div class="icard-title" style="color:var(--sun)">Simple Queue Operations</div>
+      <div class="codeblock"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">Enqueue</span>(Q, x):      <span class="comment">// Insert at rear</span>
+  <span class="kw">if</span> Q.rear == MAX-<span class="num">1</span>: <span class="str">"Overflow"</span>
+  Q.rear++; Q[rear] = x
+
+<span class="kw">Dequeue</span>(Q):          <span class="comment">// Remove from front</span>
+  <span class="kw">if</span> Q.front > Q.rear: <span class="str">"Underflow"</span>
+  val = Q[front]; Q.front++; <span class="kw">return</span> val
+      </div>
+      <div class="trace" style="margin-top:10px">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,217,61,.15);color:var(--sun)">1</div><div class="trace-content">Enqueue A,B,C → front=0, rear=2<div class="queue-vis" style="margin-top:6px"><div class="qv-item">A←front</div><div class="qv-item">B</div><div class="qv-item">C←rear</div></div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,217,61,.15);color:var(--sun)">2</div><div class="trace-content">Dequeue → returns <strong>A</strong>. front=1<div class="queue-vis" style="margin-top:6px"><div class="qv-item">B←front</div><div class="qv-item">C←rear</div></div></div></div>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,159,67,.25)">
+      <div class="icard-title" style="color:var(--r2)">Circular Queue</div>
+      <div class="icard-body">Problem with simple queue: once rear=MAX-1 even if front slots are free, we can't enqueue (wasted space). <br><strong>Circular Queue</strong> wraps around: rear = (rear+1) % MAX, reusing freed slots.</div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">CIRCULAR</span>
+<span class="kw">Enqueue</span>(Q, x):
+  <span class="kw">if</span> (rear+<span class="num">1</span>) % MAX == front: <span class="str">"Full"</span>
+  rear = (rear + <span class="num">1</span>) % MAX
+  Q[rear] = x
+
+<span class="kw">Dequeue</span>(Q):
+  <span class="kw">if</span> front == rear: <span class="str">"Empty"</span>
+  front = (front + <span class="num">1</span>) % MAX
+  <span class="kw">return</span> Q[front]
+      </div>
+      <div style="margin-top:10px;font-size:12px;line-height:1.7;opacity:.8">
+        <strong>Example (MAX=5):</strong> After enqueuing A,B,C,D and dequeuing A,B → slots 0,1 are free. Simple queue fails! Circular wraps: enqueue E at index 0, F at index 1. No wasted space.
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Queue -->
+  <div class="icard" style="border-color:rgba(255,217,61,.2)">
+    <div class="icard-title" style="color:var(--sun)">▶ Queue Simulator</div>
+    <div class="ctrl-row">
+      <input class="inp" id="qIn" placeholder="value" style="width:100px">
+      <button class="btn btn-sun" onclick="doEnqueue()">Enqueue →</button>
+      <button class="btn btn-coral" onclick="doDequeue()">← Dequeue</button>
+      <button class="btn btn-ghost" onclick="qReset()">↺</button>
+      <span class="stat-line" id="qStat">front=0 rear=-1</span>
+    </div>
+    <div class="queue-vis" id="queueVis" style="padding:12px 0;min-height:54px"><div style="opacity:.3;font-family:'Space Mono',monospace;font-size:12px">Queue is empty</div></div>
+    <div id="queueDiagram" style="margin-top:12px"></div>
+  </div>
+
+  <div class="igrid igrid-2" style="margin-top:20px">
+    <div class="theory-box" style="background:rgba(255,217,61,.06);border-color:var(--sun)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--sun);font-size:14px;margin-bottom:6px">Why does a simple queue waste space?</div>
+      <div class="tb-a">Once the front pointer moves forward, those memory slots at the beginning can never be reused even though they are empty, because the rear pointer can only move forward. Circular Queue solves this by using modulo arithmetic.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(255,159,67,.06);border-color:var(--r2)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--r2);font-size:14px;margin-bottom:6px">Real-world uses of queues?</div>
+      <div class="tb-a">CPU process scheduling, print spooler, BFS graph traversal, network packet buffering, keyboard input buffer, ticket booking systems, call center phone queues.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     5. LINKED LIST
+══════════════════════════════════════════ -->
+<section class="sec sec-dark" id="sec-ll">
+<div class="wrap">
+  <div class="slabel">TOPIC 05</div>
+  <h2 class="stitle">🔗 <span style="color:var(--lav)">Linked Lists</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#2D1060,#150530);border:2px solid rgba(195,177,225,.35)">
+    <span class="tb-tag" style="background:rgba(195,177,225,.2);color:var(--lav)">DYNAMIC LINEAR STRUCTURE</span>
+    <div class="tb-title" style="color:var(--lav)">Nodes connected by pointers</div>
+    <div class="tb-desc">A linked list is a collection of nodes where each node stores <strong>data</strong> and a <strong>pointer</strong> to the next node. Unlike arrays, linked lists don't require contiguous memory — insertion/deletion is O(1) if you have the pointer.</div>
+    <div class="tb-deco">🔗</div>
+  </div>
+
+  <div class="igrid igrid-3" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(195,177,225,.25)">
+      <div class="icard-title" style="color:var(--lav)">Singly Linked List</div>
+      <div class="icard-body">Each node has data + one <code>next</code> pointer. Traversal only in one direction. Last node points to NULL.<br><br>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;background:#0A0A14;padding:10px;border-radius:8px;line-height:2">
+        [10|→] → [20|→] → [30|→] → [40|NULL]<br>
+        HEAD↑
+      </div>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(0,210,211,.25)">
+      <div class="icard-title" style="color:var(--teal)">Doubly Linked List</div>
+      <div class="icard-body">Each node has data + <code>prev</code> + <code>next</code> pointers. Bidirectional traversal. Allows O(1) deletion if node pointer is known.<br><br>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;background:#0A0A14;padding:10px;border-radius:8px;line-height:2">
+        NULL←[10]→←[20]→←[30]→NULL<br>
+        HEAD↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TAIL↑
+      </div>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,217,61,.25)">
+      <div class="icard-title" style="color:var(--sun)">Circular Linked List</div>
+      <div class="icard-body">Last node's <code>next</code> points back to the <code>head</code>. Useful for round-robin scheduling and continuous loops.<br><br>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;background:#0A0A14;padding:10px;border-radius:8px;line-height:2">
+        [10|→] → [20|→] → [30|→]<br>
+        &nbsp;↑←←←←←←←←←←←←←←←←←←↙
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(195,177,225,.2)">
+      <div class="icard-title" style="color:var(--lav)">Insertion — 3 Cases</div>
+      <div class="trace">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(195,177,225,.15);color:var(--lav)">①</div><div class="trace-content"><strong>Insert at head:</strong> Create new node, set new.next = head, update head = new. O(1).<div style="font-family:'Space Mono',monospace;font-size:11px;margin-top:6px;opacity:.7">[NEW]→[A]→[B]→[C]→NULL</div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(195,177,225,.15);color:var(--lav)">②</div><div class="trace-content"><strong>Insert at tail:</strong> Traverse to last node, set last.next = new. O(n) for singly, O(1) if tail pointer stored.<div style="font-family:'Space Mono',monospace;font-size:11px;margin-top:6px;opacity:.7">[A]→[B]→[C]→[NEW]→NULL</div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(195,177,225,.15);color:var(--lav)">③</div><div class="trace-content"><strong>Insert at position k:</strong> Traverse to node k-1, set new.next = node[k], node[k-1].next = new. O(k).<div style="font-family:'Space Mono',monospace;font-size:11px;margin-top:6px;opacity:.7">[A]→[B]→[NEW]→[C]→NULL</div></div></div>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,107,107,.2)">
+      <div class="icard-title" style="color:var(--coral)">Deletion — 3 Cases</div>
+      <div class="trace">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">①</div><div class="trace-content"><strong>Delete head:</strong> head = head.next. Free old head. O(1).<div style="font-family:'Space Mono',monospace;font-size:11px;margin-top:6px;opacity:.7">~~[A]~~→[B]→[C]→NULL &nbsp; head=[B]</div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">②</div><div class="trace-content"><strong>Delete tail:</strong> Traverse to node n-2, set node[n-2].next = NULL. O(n).<div style="font-family:'Space Mono',monospace;font-size:11px;margin-top:6px;opacity:.7">[A]→[B]→NULL &nbsp; ~~[C]~~</div></div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,107,107,.15);color:var(--coral)">③</div><div class="trace-content"><strong>Delete node with value X:</strong> Find node before X, set prev.next = X.next. Free X. O(n).<div style="font-family:'Space Mono',monospace;font-size:11px;margin-top:6px;opacity:.7">[A]→~~[B]~~→[C]: set A.next = C</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="icard" style="border-color:rgba(195,177,225,.2)">
+    <div class="icard-title" style="color:var(--lav)">Search in Linked List — O(n)</div>
+    <div class="icard-body" style="margin-bottom:12px">Cannot use binary search (no random access by index). Must traverse from head node by node.</div>
+    <div class="codeblock"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">search</span>(head, target):
+  current = head
+  position = <span class="num">0</span>
+  <span class="kw">while</span> current != NULL:
+    <span class="kw">if</span> current.data == target:
+      <span class="kw">return</span> position      <span class="comment">// found!</span>
+    current = current.next
+    position++
+  <span class="kw">return</span> -<span class="num">1</span>              <span class="comment">// not found</span>
+    </div>
+  </div>
+
+  <div class="procon" style="margin-top:16px">
+    <div class="pros">
+      <div class="pc-title" style="color:var(--mint)">ADVANTAGES ✓</div>
+      <div class="pc-item">Dynamic size — grows/shrinks at runtime</div>
+      <div class="pc-item">O(1) insertion/deletion at head</div>
+      <div class="pc-item">No memory wastage (allocates as needed)</div>
+      <div class="pc-item">Efficient for deque, stack, queue implementation</div>
+    </div>
+    <div class="cons">
+      <div class="pc-title" style="color:var(--coral)">DISADVANTAGES ✗</div>
+      <div class="pc-item">No random access — O(n) to reach index k</div>
+      <div class="pc-item">Extra memory for pointers</div>
+      <div class="pc-item">Cache unfriendly (non-contiguous memory)</div>
+      <div class="pc-item">Reverse traversal requires doubly-linked</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     6. HASH FUNCTION
+══════════════════════════════════════════ -->
+<section class="sec" id="sec-hash">
+<div class="wrap">
+  <div class="slabel">TOPIC 06</div>
+  <h2 class="stitle"># <span style="color:var(--mint)">Hash Functions</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#0A3025,#041510);border:2px solid rgba(168,230,207,.35)">
+    <span class="tb-tag" style="background:rgba(168,230,207,.2);color:var(--mint)">HASH TABLE</span>
+    <div class="tb-title" style="color:var(--mint)">O(1) key-to-value mapping</div>
+    <div class="tb-desc">A hash function maps a key to an index in an array (hash table). Goal: distribute keys uniformly. <strong>Collision</strong> = two keys map to same index. Two strategies: <em>Open Hashing (Chaining)</em> and <em>Closed Hashing (Open Addressing)</em>.</div>
+    <div class="tb-deco">#</div>
+  </div>
+
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(168,230,207,.2)">
+      <div class="icard-title" style="color:var(--mint)">Hash Function Design</div>
+      <div class="icard-body">A good hash function should:<br>
+      <div style="margin-top:8px;font-size:13px;line-height:1.9">
+        → Be <strong>fast</strong> to compute — O(1)<br>
+        → Distribute keys <strong>uniformly</strong> across all slots<br>
+        → Minimise <strong>collisions</strong><br>
+        → Deterministic — same key always → same index
+      </div>
+      </div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">DIVISION METHOD</span>
+h(key) = key % table_size
+
+<span class="comment">// Example: table_size = 7</span>
+h(<span class="num">25</span>) = <span class="num">25</span> % <span class="num">7</span> = <span class="num">4</span>
+h(<span class="num">36</span>) = <span class="num">36</span> % <span class="num">7</span> = <span class="num">1</span>
+h(<span class="num">10</span>) = <span class="num">10</span> % <span class="num">7</span> = <span class="num">3</span>
+h(<span class="num">17</span>) = <span class="num">17</span> % <span class="num">7</span> = <span class="num">3</span>  <span class="comment">← collision!</span>
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(168,230,207,.2)">
+      <div class="icard-title" style="color:var(--mint)">Open Hashing (Chaining)</div>
+      <div class="icard-body">Each slot holds a <strong>linked list</strong>. Colliding keys are chained in the same slot's list. Table never gets "full".</div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">CHAINING — table[7], keys: 25,36,10,17,43</span>
+slot <span class="num">0</span>: [empty]
+slot <span class="num">1</span>: [36] → NULL
+slot <span class="num">2</span>: [43] → NULL
+slot <span class="num">3</span>: [10] → [17] → NULL  <span class="comment">← chain!</span>
+slot <span class="num">4</span>: [25] → NULL
+slot <span class="num">5</span>: [empty]
+slot <span class="num">6</span>: [empty]
+
+<span class="kw">Search</span>(17): h(17)=3 → traverse chain [10→17] ✓
+      </div>
+    </div>
+  </div>
+
+  <div class="icard" style="border-color:rgba(168,230,207,.2);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--mint)">Closed Hashing (Open Addressing) — 3 Probing Methods</div>
+    <div class="igrid igrid-3" style="margin-top:10px">
+      <div style="background:#0A0A14;border-radius:12px;padding:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);margin-bottom:8px;letter-spacing:2px">LINEAR PROBING</div>
+        <div style="font-size:12px;line-height:1.7;opacity:.8">If h(k) is full, try h(k)+1, h(k)+2, ... (mod n). Simple but causes <em>primary clustering</em>.</div>
+        <div class="codeblock" style="margin-top:8px">h(k,i) = (h(k) + i) % n</div>
+      </div>
+      <div style="background:#0A0A14;border-radius:12px;padding:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--sun);margin-bottom:8px;letter-spacing:2px">QUADRATIC PROBING</div>
+        <div style="font-size:12px;line-height:1.7;opacity:.8">Probe at h(k)+1², h(k)+2², h(k)+3². Reduces clustering but may not probe all slots.</div>
+        <div class="codeblock" style="margin-top:8px">h(k,i) = (h(k) + i²) % n</div>
+      </div>
+      <div style="background:#0A0A14;border-radius:12px;padding:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--coral);margin-bottom:8px;letter-spacing:2px">DOUBLE HASHING</div>
+        <div style="font-size:12px;line-height:1.7;opacity:.8">Use a second hash function for step size. Best distribution, eliminates clustering.</div>
+        <div class="codeblock" style="margin-top:8px">h(k,i) = (h1(k) + i·h2(k)) % n</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="igrid igrid-2">
+    <div class="theory-box" style="background:rgba(168,230,207,.05);border-color:var(--mint)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--mint);font-size:14px;margin-bottom:6px">Open vs Closed Hashing — when to choose?</div>
+      <div class="tb-a"><strong>Open (Chaining)</strong>: better when load factor &gt; 0.7, deletions are frequent, or table size is hard to predict.<br><strong>Closed (Open Addressing)</strong>: better cache performance (all data in one array), no pointer overhead, good when load factor &lt; 0.5.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(255,217,61,.05);border-color:var(--sun)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--sun);font-size:14px;margin-bottom:6px">What is Load Factor?</div>
+      <div class="tb-a">Load Factor α = n/m, where n = number of keys stored, m = number of slots. When α is too high (e.g., &gt;0.75), collisions increase and performance degrades. Most hash tables <em>rehash</em> (double size) when α exceeds a threshold.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     7. TREES
+══════════════════════════════════════════ -->
+<section class="sec sec-dark" id="sec-trees">
+<div class="wrap">
+  <div class="slabel">TOPIC 07</div>
+  <h2 class="stitle">🌳 <span style="color:var(--r5)">Trees</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#3D0A2A,#1A0510);border:2px solid rgba(255,159,243,.35)">
+    <span class="tb-tag" style="background:rgba(255,159,243,.2);color:var(--r5)">HIERARCHICAL STRUCTURE</span>
+    <div class="tb-title" style="color:var(--r5)">Nodes, edges, and balance</div>
+    <div class="tb-desc">A tree is a non-linear data structure of nodes connected by edges with no cycles. Variants differ by <strong>balance guarantees</strong>: BST (no guarantee), AVL (height-balanced), Red-Black (color-balanced). All operations O(log n) in balanced trees.</div>
+    <div class="tb-deco">🌳</div>
+  </div>
+
+  <!-- BST -->
+  <div class="icard" style="border-color:rgba(255,159,243,.25);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--r5)">Binary Search Tree (BST)</div>
+    <div class="igrid igrid-2" style="margin-top:10px">
+      <div>
+        <div class="icard-body"><strong>Property:</strong> Left subtree keys &lt; root &lt; Right subtree keys. Applies recursively to every subtree.<br><br>
+          <span class="cx cx-b">Search O(log n)</span><span class="cx cx-b">Insert O(log n)</span><span class="cx cx-b">Delete O(log n)</span><br>
+          <span class="cx cx-r">Worst case O(n) if unbalanced (sorted input)</span>
+        </div>
+        <div class="codeblock" style="margin-top:10px"><span class="cb-label">INSERT</span>
+<span class="kw">function</span> <span class="fn">insert</span>(node, val):
+  <span class="kw">if</span> node == NULL: <span class="kw">return</span> <span class="fn">newNode</span>(val)
+  <span class="kw">if</span> val &lt; node.val:
+    node.left = <span class="fn">insert</span>(node.left, val)
+  <span class="kw">else if</span> val &gt; node.val:
+    node.right = <span class="fn">insert</span>(node.right, val)
+  <span class="kw">return</span> node
+        </div>
+        <div style="margin-top:12px">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--r5);margin-bottom:8px">TRAVERSALS on BST [50,30,70,20,40,60,80]</div>
+          <div style="font-size:12px;line-height:1.9;background:#0A0A14;padding:12px;border-radius:10px">
+            <span style="color:var(--mint)">Inorder</span> (L→Root→R) = <code>20 30 40 50 60 70 80</code> ← sorted!<br>
+            <span style="color:var(--lav)">Preorder</span> (Root→L→R) = <code>50 30 20 40 70 60 80</code><br>
+            <span style="color:var(--coral)">Postorder</span> (L→R→Root) = <code>20 40 30 60 80 70 50</code>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--r5);margin-bottom:8px">BST STRUCTURE</div>
+        <svg viewBox="0 0 320 280" style="width:100%;background:#0A0A14;border-radius:12px">
+          <!-- edges -->
+          <line x1="160" y1="40" x2="90" y2="110" stroke="rgba(255,159,243,.3)" stroke-width="2"/>
+          <line x1="160" y1="40" x2="230" y2="110" stroke="rgba(255,159,243,.3)" stroke-width="2"/>
+          <line x1="90" y1="110" x2="55" y2="180" stroke="rgba(255,159,243,.3)" stroke-width="2"/>
+          <line x1="90" y1="110" x2="125" y2="180" stroke="rgba(255,159,243,.3)" stroke-width="2"/>
+          <line x1="230" y1="110" x2="195" y2="180" stroke="rgba(255,159,243,.3)" stroke-width="2"/>
+          <line x1="230" y1="110" x2="265" y2="180" stroke="rgba(255,159,243,.3)" stroke-width="2"/>
+          <!-- nodes -->
+          <circle cx="160" cy="40" r="22" fill="#3D0A2A" stroke="#FF9FF3" stroke-width="2"/>
+          <text x="160" y="46" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="13" font-weight="700">50</text>
+          <circle cx="90" cy="110" r="20" fill="#2A0520" stroke="#FF9FF3" stroke-width="1.5"/>
+          <text x="90" y="116" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="12">30</text>
+          <circle cx="230" cy="110" r="20" fill="#2A0520" stroke="#FF9FF3" stroke-width="1.5"/>
+          <text x="230" y="116" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="12">70</text>
+          <circle cx="55" cy="180" r="18" fill="#1A0315" stroke="rgba(255,159,243,.5)" stroke-width="1.5"/>
+          <text x="55" y="186" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="11">20</text>
+          <circle cx="125" cy="180" r="18" fill="#1A0315" stroke="rgba(255,159,243,.5)" stroke-width="1.5"/>
+          <text x="125" y="186" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="11">40</text>
+          <circle cx="195" cy="180" r="18" fill="#1A0315" stroke="rgba(255,159,243,.5)" stroke-width="1.5"/>
+          <text x="195" y="186" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="11">60</text>
+          <circle cx="265" cy="180" r="18" fill="#1A0315" stroke="rgba(255,159,243,.5)" stroke-width="1.5"/>
+          <text x="265" y="186" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="11">80</text>
+          <text x="160" y="240" text-anchor="middle" fill="rgba(255,255,255,.25)" font-family="Space Mono" font-size="10">Left &lt; Parent &lt; Right</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- AVL -->
+  <div class="icard" style="border-color:rgba(0,210,211,.25);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--teal)">AVL Tree — Self-Balancing BST</div>
+    <div class="igrid igrid-2" style="margin-top:10px">
+      <div>
+        <div class="icard-body"><strong>Balance Factor</strong> = height(left) − height(right). Must be -1, 0, or +1 for every node. If |BF| &gt; 1, perform <strong>rotation</strong> to rebalance.<br><br>
+          <span class="cx cx-b">All ops guaranteed O(log n)</span>
+        </div>
+        <div style="margin-top:12px;font-size:13px;line-height:1.8;background:#0A0A14;padding:14px;border-radius:10px">
+          <strong style="color:var(--teal)">4 Rotation Cases:</strong><br>
+          <span style="color:var(--sun)">LL (Right Rotate)</span>: inserted in left of left child<br>
+          <span style="color:var(--coral)">RR (Left Rotate)</span>: inserted in right of right child<br>
+          <span style="color:var(--lav)">LR (Left-Right)</span>: left rotate child, then right rotate root<br>
+          <span style="color:var(--mint)">RL (Right-Left)</span>: right rotate child, then left rotate root
+        </div>
+        <div class="codeblock" style="margin-top:10px"><span class="cb-label">RIGHT ROTATION (LL case)</span>
+<span class="kw">function</span> <span class="fn">rightRotate</span>(y):
+  x = y.left
+  T2 = x.right
+  x.right = y
+  y.left = T2
+  <span class="comment">// Update heights</span>
+  y.height = max(h(y.left), h(y.right)) + <span class="num">1</span>
+  x.height = max(h(x.left), h(x.right)) + <span class="num">1</span>
+  <span class="kw">return</span> x  <span class="comment">// x becomes new root</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:2px;margin-bottom:8px">AVL INSERTION EXAMPLE: insert 10,20,30</div>
+        <div style="background:#0A0A14;border-radius:12px;padding:16px;font-size:12px;line-height:1.9">
+          <strong>Step 1:</strong> Insert 10 → [10] BF=0 ✓<br>
+          <strong>Step 2:</strong> Insert 20 → [10(R:20)] BF(10)=-1 ✓<br>
+          <strong>Step 3:</strong> Insert 30 → [10(R:20(R:30))] BF(10)=-2 ✗<br>
+          → <span style="color:var(--coral)">RR case! Left rotate at 10</span><br>
+          → Result: [20(L:10,R:30)] BF=0 ✓<br><br>
+          <svg viewBox="0 0 280 120" style="width:100%">
+            <text x="30" y="15" fill="rgba(255,255,255,.4)" font-family="Space Mono" font-size="9">BEFORE (unbalanced)</text>
+            <circle cx="50" cy="40" r="16" fill="#0A3A30" stroke="#00D2D3" stroke-width="1.5"/>
+            <text x="50" y="46" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="11">10</text>
+            <line x1="66" y1="48" x2="85" y2="68" stroke="rgba(0,210,211,.3)" stroke-width="1.5"/>
+            <circle cx="95" cy="80" r="16" fill="#0A3A30" stroke="#00D2D3" stroke-width="1.5"/>
+            <text x="95" y="86" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="11">20</text>
+            <line x1="111" y1="88" x2="130" y2="100" stroke="rgba(0,210,211,.3)" stroke-width="1.5"/>
+            <circle cx="140" cy="108" r="14" fill="#0A3A30" stroke="rgba(0,210,211,.5)" stroke-width="1"/>
+            <text x="140" y="113" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="10">30</text>
+            <text x="50" y="25" text-anchor="middle" fill="var(--coral)" font-family="Space Mono" font-size="9">BF=-2</text>
+            <!-- Arrow -->
+            <text x="165" y="70" fill="var(--sun)" font-family="Space Mono" font-size="18">→</text>
+            <!-- After -->
+            <text x="185" y="15" fill="rgba(255,255,255,.4)" font-family="Space Mono" font-size="9">AFTER (balanced)</text>
+            <circle cx="230" cy="40" r="16" fill="#0A3A30" stroke="#00D2D3" stroke-width="2"/>
+            <text x="230" y="46" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="11">20</text>
+            <line x1="214" y1="50" x2="200" y2="70" stroke="rgba(0,210,211,.3)" stroke-width="1.5"/>
+            <circle cx="192" cy="82" r="14" fill="#0A3A30" stroke="rgba(0,210,211,.5)"/>
+            <text x="192" y="87" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="10">10</text>
+            <line x1="246" y1="50" x2="258" y2="70" stroke="rgba(0,210,211,.3)" stroke-width="1.5"/>
+            <circle cx="264" cy="82" r="14" fill="#0A3A30" stroke="rgba(0,210,211,.5)"/>
+            <text x="264" y="87" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="10">30</text>
+            <text x="230" y="25" text-anchor="middle" fill="var(--mint)" font-family="Space Mono" font-size="9">BF=0 ✓</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Red-Black Tree -->
+  <div class="icard" style="border-color:rgba(255,107,107,.25)">
+    <div class="icard-title" style="color:var(--coral)">Red-Black Tree</div>
+    <div class="igrid igrid-2" style="margin-top:10px">
+      <div>
+        <div class="icard-body"><strong>Properties (5 rules):</strong></div>
+        <div style="font-size:12px;line-height:2;margin-top:8px">
+          <div>1. Every node is <span style="color:var(--coral)">RED</span> or <span style="opacity:.6">BLACK</span></div>
+          <div>2. Root is always <span style="opacity:.6">BLACK</span></div>
+          <div>3. NULL leaves (NIL) are <span style="opacity:.6">BLACK</span></div>
+          <div>4. If a node is <span style="color:var(--coral)">RED</span>, both children are <span style="opacity:.6">BLACK</span></div>
+          <div>5. All paths from a node to NIL have the <strong>same number of BLACK nodes</strong></div>
+        </div>
+        <div style="margin-top:12px;background:#0A0A14;padding:12px;border-radius:10px;font-size:12px;line-height:1.8">
+          <span class="cx cx-b">Height ≤ 2·log₂(n+1)</span><br>
+          Guarantees O(log n) for all operations.<br>
+          Rebalancing uses <strong>rotations</strong> + <strong>recoloring</strong>.<br>
+          Less strictly balanced than AVL → <strong>faster insertions</strong>.<br>
+          Used in: Java TreeMap, C++ std::map, Linux scheduler.
+        </div>
+      </div>
+      <div>
+        <svg viewBox="0 0 300 220" style="width:100%;background:#0A0A14;border-radius:12px">
+          <line x1="150" y1="40" x2="85" y2="100" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <line x1="150" y1="40" x2="215" y2="100" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <line x1="85" y1="100" x2="52" y2="160" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <line x1="85" y1="100" x2="118" y2="160" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <line x1="215" y1="100" x2="248" y2="160" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <!-- Black nodes -->
+          <circle cx="150" cy="40" r="22" fill="#2A2A2A" stroke="#888" stroke-width="2"/>
+          <text x="150" y="46" text-anchor="middle" fill="white" font-family="Space Mono" font-size="12" font-weight="700">13B</text>
+          <circle cx="85" cy="100" r="20" fill="#2A2A2A" stroke="#888" stroke-width="1.5"/>
+          <text x="85" y="106" text-anchor="middle" fill="white" font-family="Space Mono" font-size="11">8B</text>
+          <circle cx="52" cy="160" r="18" fill="#2A2A2A" stroke="#888" stroke-width="1.5"/>
+          <text x="52" y="166" text-anchor="middle" fill="white" font-family="Space Mono" font-size="10">1B</text>
+          <!-- Red nodes -->
+          <circle cx="215" cy="100" r="20" fill="#5A0A0A" stroke="#FF6B6B" stroke-width="2"/>
+          <text x="215" y="106" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">17R</text>
+          <circle cx="118" cy="160" r="18" fill="#5A0A0A" stroke="#FF6B6B" stroke-width="1.5"/>
+          <text x="118" y="166" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="10">11R</text>
+          <circle cx="248" cy="160" r="18" fill="#5A0A0A" stroke="#FF6B6B" stroke-width="1.5"/>
+          <text x="248" y="166" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="10">25R</text>
+          <text x="150" y="205" text-anchor="middle" fill="rgba(255,255,255,.3)" font-family="Space Mono" font-size="9">R=Red B=Black — no two consecutive reds</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     8. GRAPHS  (most detailed)
+══════════════════════════════════════════ -->
+<section class="sec" id="sec-graphs">
+<div class="wrap">
+  <div class="slabel">TOPIC 08</div>
+  <h2 class="stitle">🕸️ <span style="color:var(--r2)">Graphs</span></h2>
+
+  <div class="topic-banner" style="background:linear-gradient(135deg,#3D1500,#1A0800);border:2px solid rgba(255,159,67,.35)">
+    <span class="tb-tag" style="background:rgba(255,159,67,.2);color:var(--r2)">GRAPH ALGORITHMS</span>
+    <div class="tb-title" style="color:var(--r2)">Vertices, edges, and paths</div>
+    <div class="tb-desc">A graph G=(V,E) consists of <strong>vertices</strong> (nodes) and <strong>edges</strong> (connections). Graphs model networks, maps, social connections, dependencies. Key representations: <em>Adjacency Matrix</em> O(V²) space, <em>Adjacency List</em> O(V+E) space.</div>
+    <div class="tb-deco">🕸️</div>
+  </div>
+
+  <!-- Representations -->
+  <div class="igrid igrid-2" style="margin-bottom:24px">
+    <div class="icard" style="border-color:rgba(255,159,67,.2)">
+      <div class="icard-title" style="color:var(--r2)">Adjacency Matrix</div>
+      <div class="icard-body">2D array where matrix[i][j]=1 if edge exists. O(1) lookup, O(V²) space. Good for dense graphs.</div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">GRAPH: A-B, A-C, B-D, C-D</span>
+    A  B  C  D
+A [ <span class="num">0</span>  <span class="num">1</span>  <span class="num">1</span>  <span class="num">0</span> ]
+B [ <span class="num">1</span>  <span class="num">0</span>  <span class="num">0</span>  <span class="num">1</span> ]
+C [ <span class="num">1</span>  <span class="num">0</span>  <span class="num">0</span>  <span class="num">1</span> ]
+D [ <span class="num">0</span>  <span class="num">1</span>  <span class="num">1</span>  <span class="num">0</span> ]
+      </div>
+    </div>
+    <div class="icard" style="border-color:rgba(255,159,67,.2)">
+      <div class="icard-title" style="color:var(--r2)">Adjacency List</div>
+      <div class="icard-body">Array of linked lists. Each node stores its neighbors. O(V+E) space. Best for sparse graphs.</div>
+      <div class="codeblock" style="margin-top:10px"><span class="cb-label">SAME GRAPH</span>
+A → [B, C]
+B → [A, D]
+C → [A, D]
+D → [B, C]
+
+<span class="comment">// Space: O(V+E) vs O(V²)</span>
+<span class="comment">// For sparse graphs: huge savings!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BFS -->
+  <div class="icard" style="border-color:rgba(72,219,251,.25);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--r4)">BFS — Breadth-First Search</div>
+    <div class="igrid igrid-2" style="margin-top:10px">
+      <div>
+        <div class="icard-body">Explore level-by-level using a <strong>Queue</strong>. Visits all neighbors before going deeper. Finds <strong>shortest path</strong> in unweighted graphs.<br><br>
+          <span class="cx cx-b">Time O(V+E)</span><span class="cx cx-b">Space O(V)</span>
+        </div>
+        <div class="codeblock" style="margin-top:10px"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">BFS</span>(graph, start):
+  visited = {} ; queue = [start]
+  visited.add(start)
+  <span class="kw">while</span> queue not empty:
+    v = queue.dequeue()
+    process(v)
+    <span class="kw">for</span> neighbor <span class="kw">in</span> graph[v]:
+      <span class="kw">if</span> neighbor <span class="kw">not in</span> visited:
+        visited.add(neighbor)
+        queue.enqueue(neighbor)
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--r4);letter-spacing:2px;margin-bottom:8px">BFS TRACE — start from A</div>
+        <div class="trace">
+          <div class="trace-step"><div class="trace-num" style="background:rgba(72,219,251,.15);color:var(--r4)">1</div><div class="trace-content">Queue: [<strong>A</strong>]. Visit A. Enqueue neighbors B,C.<br>Queue: [B, C]. Visited: {A}</div></div>
+          <div class="trace-step"><div class="trace-num" style="background:rgba(72,219,251,.15);color:var(--r4)">2</div><div class="trace-content">Dequeue <strong>B</strong>. Visit B. Enqueue D (unvisited).<br>Queue: [C, D]. Visited: {A,B}</div></div>
+          <div class="trace-step"><div class="trace-num" style="background:rgba(72,219,251,.15);color:var(--r4)">3</div><div class="trace-content">Dequeue <strong>C</strong>. Visit C. D already queued.<br>Queue: [D]. Visited: {A,B,C}</div></div>
+          <div class="trace-step"><div class="trace-num" style="background:rgba(72,219,251,.15);color:var(--r4)">4</div><div class="trace-content">Dequeue <strong>D</strong>. Visit D. No new neighbors.<br>Queue: []. <strong>BFS Order: A→B→C→D</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DFS -->
+  <div class="icard" style="border-color:rgba(255,159,243,.25);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--r5)">DFS — Depth-First Search</div>
+    <div class="igrid igrid-2" style="margin-top:10px">
+      <div>
+        <div class="icard-body">Explore as deep as possible using a <strong>Stack</strong> (or recursion). Backtracks when dead end reached. Used for cycle detection, topological sort, maze solving.<br><br>
+          <span class="cx cx-b">Time O(V+E)</span><span class="cx cx-b">Space O(V)</span>
+        </div>
+        <div class="codeblock" style="margin-top:10px"><span class="cb-label">RECURSIVE</span>
+<span class="kw">function</span> <span class="fn">DFS</span>(graph, v, visited):
+  visited.add(v)
+  process(v)
+  <span class="kw">for</span> neighbor <span class="kw">in</span> graph[v]:
+    <span class="kw">if</span> neighbor <span class="kw">not in</span> visited:
+      <span class="fn">DFS</span>(graph, neighbor, visited)
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--r5);letter-spacing:2px;margin-bottom:8px">DFS TRACE — start from A</div>
+        <div class="trace">
+          <div class="trace-step"><div class="trace-num" style="background:rgba(255,159,243,.15);color:var(--r5)">1</div><div class="trace-content">Visit <strong>A</strong>. Go to first neighbor B. Stack: [A]</div></div>
+          <div class="trace-step"><div class="trace-num" style="background:rgba(255,159,243,.15);color:var(--r5)">2</div><div class="trace-content">Visit <strong>B</strong>. Go deep to D. Stack: [A,B]</div></div>
+          <div class="trace-step"><div class="trace-num" style="background:rgba(255,159,243,.15);color:var(--r5)">3</div><div class="trace-content">Visit <strong>D</strong>. Check C (unvisited) → visit C. Stack: [A,B,D]</div></div>
+          <div class="trace-step"><div class="trace-num" style="background:rgba(255,159,243,.15);color:var(--r5)">4</div><div class="trace-content">Visit <strong>C</strong>. All neighbors visited. Backtrack.<br><strong>DFS Order: A→B→D→C</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIJKSTRA — most detailed -->
+  <div class="icard" style="border-color:rgba(255,217,61,.3);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--sun)">⭐ Dijkstra's Algorithm — Shortest Path (Weighted)</div>
+    <div class="icard-body" style="margin-bottom:16px">Finds the shortest path from a <strong>source vertex</strong> to all other vertices in a weighted graph with <strong>non-negative weights</strong>. Uses a <strong>priority queue (min-heap)</strong>.<br>
+      <span class="cx cx-b">Time O((V+E) log V)</span><span class="cx cx-g">Works with non-negative weights only</span><span class="cx cx-r">Fails with negative edges</span>
+    </div>
+    <div class="igrid igrid-2">
+      <div>
+        <div class="codeblock"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">Dijkstra</span>(graph, src):
+  dist[src]=<span class="num">0</span>; dist[all others]=∞
+  pq = MinHeap(); pq.insert(src, <span class="num">0</span>)
+  <span class="kw">while</span> pq not empty:
+    u = pq.extractMin()
+    <span class="kw">for</span> (v, weight) <span class="kw">in</span> graph[u]:
+      <span class="kw">if</span> dist[u]+weight &lt; dist[v]:
+        dist[v] = dist[u] + weight
+        pq.decreaseKey(v, dist[v])
+  <span class="kw">return</span> dist[]
+        </div>
+      </div>
+      <div>
+        <svg viewBox="0 0 300 200" style="width:100%;background:#0A0A14;border-radius:12px">
+          <!-- edges with weights -->
+          <line x1="60" y1="100" x2="150" y2="50" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="60" y1="100" x2="150" y2="150" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="150" y1="50" x2="240" y2="100" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="150" y1="150" x2="240" y2="100" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="150" y1="50" x2="150" y2="150" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <!-- weight labels -->
+          <text x="96" y="64" fill="#FFD93D" font-family="Space Mono" font-size="10" opacity=".8">4</text>
+          <text x="90" y="140" fill="#FFD93D" font-family="Space Mono" font-size="10" opacity=".8">2</text>
+          <text x="200" y="64" fill="#FFD93D" font-family="Space Mono" font-size="10" opacity=".8">3</text>
+          <text x="195" y="142" fill="#FFD93D" font-family="Space Mono" font-size="10" opacity=".8">1</text>
+          <text x="156" y="104" fill="#FFD93D" font-family="Space Mono" font-size="10" opacity=".8">5</text>
+          <!-- nodes -->
+          <circle cx="60" cy="100" r="22" fill="#2A1E00" stroke="#FFD93D" stroke-width="2.5"/>
+          <text x="60" y="106" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="13" font-weight="700">A</text>
+          <circle cx="150" cy="50" r="20" fill="#1A1400" stroke="rgba(255,217,61,.6)" stroke-width="1.5"/>
+          <text x="150" y="56" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">B</text>
+          <circle cx="150" cy="150" r="20" fill="#1A1400" stroke="rgba(255,217,61,.6)" stroke-width="1.5"/>
+          <text x="150" y="156" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">C</text>
+          <circle cx="240" cy="100" r="20" fill="#1A1400" stroke="rgba(255,217,61,.6)" stroke-width="1.5"/>
+          <text x="240" y="106" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">D</text>
+          <text x="150" y="190" text-anchor="middle" fill="rgba(255,255,255,.3)" font-family="Space Mono" font-size="9">Weighted directed graph</text>
+        </svg>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--sun);letter-spacing:2px;margin-bottom:10px">STEP-BY-STEP TRACE — Source: A</div>
+      <div class="trace">
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,217,61,.15);color:var(--sun)">Init</div><div class="trace-content">dist[A]=<strong>0</strong>, dist[B]=∞, dist[C]=∞, dist[D]=∞. PQ: [(A,0)]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,217,61,.15);color:var(--sun)">1</div><div class="trace-content">Extract min: <strong>A(0)</strong>. Check neighbors:<br>→ B: 0+4=4 &lt; ∞ → dist[B]=<strong>4</strong>. PQ: [(B,4)]<br>→ C: 0+2=2 &lt; ∞ → dist[C]=<strong>2</strong>. PQ: [(C,2),(B,4)]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,217,61,.15);color:var(--sun)">2</div><div class="trace-content">Extract min: <strong>C(2)</strong>. Check neighbors:<br>→ D: 2+1=3 &lt; ∞ → dist[D]=<strong>3</strong>. PQ: [(D,3),(B,4)]<br>→ B: 2+5=7 &gt; 4, no update.</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(255,217,61,.15);color:var(--sun)">3</div><div class="trace-content">Extract min: <strong>D(3)</strong>. No shorter paths found. PQ: [(B,4)]</div></div>
+        <div class="trace-step"><div class="trace-num" style="background:rgba(168,230,207,.2);color:var(--mint)">4</div><div class="trace-content">Extract min: <strong>B(4)</strong>. Check D: 4+3=7 &gt; 3. No update.<br><strong>Final: A→A=0, A→B=4, A→C=2, A→D=3</strong><br>Shortest path to D: A→C→D (cost 3) ✓</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BELLMAN-FORD -->
+  <div class="icard" style="border-color:rgba(255,107,107,.25);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--coral)">Bellman-Ford Algorithm — Handles Negative Weights</div>
+    <div class="igrid igrid-2" style="margin-top:10px">
+      <div>
+        <div class="icard-body">Relax <strong>all edges V-1 times</strong>. After V-1 relaxations, if any edge can still be relaxed → <strong>negative cycle</strong> detected.<br><br>
+          <span class="cx cx-r">Time O(VE)</span><span class="cx cx-b">Space O(V)</span><span class="cx cx-g">Handles negative weights</span><span class="cx cx-r">Detects negative cycles</span>
+        </div>
+        <div class="codeblock" style="margin-top:10px"><span class="cb-label">PSEUDOCODE</span>
+<span class="kw">function</span> <span class="fn">BellmanFord</span>(graph, src):
+  dist[src]=<span class="num">0</span>; dist[others]=∞
+  <span class="comment">// Relax V-1 times</span>
+  <span class="kw">for</span> i = <span class="num">1</span> <span class="kw">to</span> V-<span class="num">1</span>:
+    <span class="kw">for each</span> edge (u,v,w):
+      <span class="kw">if</span> dist[u]+w &lt; dist[v]:
+        dist[v] = dist[u]+w
+  <span class="comment">// Check negative cycle</span>
+  <span class="kw">for each</span> edge (u,v,w):
+    <span class="kw">if</span> dist[u]+w &lt; dist[v]:
+      <span class="kw">return</span> <span class="str">"Negative cycle!"</span>
+  <span class="kw">return</span> dist[]
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;line-height:1.9;background:#0A0A14;padding:14px;border-radius:10px">
+          <strong style="color:var(--coral)">Example — Graph with negative edge:</strong><br>
+          Edges: A→B(4), A→C(3), B→C(-2), C→D(1), B→D(5)<br><br>
+          <strong>Pass 1:</strong> A→B=4, A→C=3<br>
+          After relax B→C(-2): dist[C]=min(3, 4-2)=<strong>2</strong><br>
+          After relax C→D: dist[D]=min(∞, 2+1)=<strong>3</strong><br><br>
+          <strong>Pass 2:</strong> No improvements (converged)<br><br>
+          <strong>Final:</strong> A=0, B=4, C=2, D=3 ✓<br>
+          <span style="opacity:.5;font-size:11px">Dijkstra would give WRONG answer here because of negative edge B→C(-2)!</span>
+        </div>
+        <div class="theory-box" style="margin-top:10px;background:rgba(255,107,107,.06);border-color:var(--coral)">
+          <div class="tb-q">Why Dijkstra fails with negative edges</div>
+          <div class="tb-a" style="font-size:12px">Dijkstra assumes: once a node is "finalized" (extracted from PQ), its distance is optimal. A negative edge can later reduce that distance, breaking this assumption.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOYD-WARSHALL -->
+  <div class="icard" style="border-color:rgba(168,230,207,.25);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--mint)">Floyd-Warshall Algorithm — All-Pairs Shortest Paths</div>
+    <div class="icard-body" style="margin-bottom:14px">Finds shortest paths between <strong>every pair</strong> of vertices. Uses dynamic programming with intermediate vertices.<br>
+      <span class="cx cx-r">Time O(V³)</span><span class="cx cx-r">Space O(V²)</span><span class="cx cx-g">Handles negative weights</span><span class="cx cx-r">Detects negative cycles</span>
+    </div>
+    <div class="igrid igrid-2">
+      <div>
+        <div class="codeblock"><span class="cb-label">PSEUDOCODE</span>
+<span class="comment">// dist[i][j] = initial edge weights</span>
+<span class="comment">// ∞ if no direct edge</span>
+<span class="kw">for</span> k = <span class="num">0</span> <span class="kw">to</span> V-<span class="num">1</span>:      <span class="comment">// intermediate</span>
+  <span class="kw">for</span> i = <span class="num">0</span> <span class="kw">to</span> V-<span class="num">1</span>:
+    <span class="kw">for</span> j = <span class="num">0</span> <span class="kw">to</span> V-<span class="num">1</span>:
+      <span class="kw">if</span> dist[i][k] + dist[k][j]
+           &lt; dist[i][j]:
+        dist[i][j] = dist[i][k]
+                   + dist[k][j]
+
+<span class="comment">// Detect negative cycle:</span>
+<span class="kw">if</span> dist[i][i] &lt; <span class="num">0</span>: <span class="str">"Neg cycle!"</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;line-height:1.8;background:#0A0A14;padding:14px;border-radius:10px">
+          <strong style="color:var(--mint)">Example (4 vertices):</strong><br>
+          Edges: A→B=3, A→C=8, B→C=-4, B→D=1, C→D=7, D→A=2<br><br>
+          <strong>Initial dist matrix:</strong><br>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;margin:6px 0">
+            &nbsp;&nbsp; A  &nbsp;B  &nbsp;C  &nbsp;D<br>
+            A[ 0, 3, 8, ∞]<br>
+            B[∞, 0,-4, 1]<br>
+            C[∞, ∞, 0, 7]<br>
+            D[2, ∞, ∞, 0]
+          </div>
+          <strong>After Floyd-Warshall:</strong><br>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;margin:6px 0">
+            &nbsp;&nbsp; A  B  C  D<br>
+            A[ 0, 3,-1, 4]<br>
+            B[-4,-1,-5, 1]<br>
+            C[ 3, 4, 0, 7]<br>
+            D[ 2, 5, 1, 0]
+          </div>
+          dist[A][C]=-1: A→B→C=-4? No: A→B(3)+B→C(-4)=<strong>-1</strong> ✓
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BFS vs Dijkstra vs BF vs FW comparison -->
+  <div class="icard" style="border-color:rgba(255,159,67,.2);margin-bottom:24px">
+    <div class="icard-title" style="color:var(--r2)">Algorithm Comparison — Which to Use?</div>
+    <div style="overflow-x:auto;margin-top:12px">
+      <table class="cxtable">
+        <thead><tr><th>Algorithm</th><th>Graph Type</th><th>Weights</th><th>Negative?</th><th>Single/All</th><th>Time</th><th>Space</th></tr></thead>
+        <tbody>
+          <tr><td>BFS</td><td>Unweighted</td><td>None / Equal</td><td>N/A</td><td>Single source</td><td><span class="cx cx-g">O(V+E)</span></td><td><span class="cx cx-g">O(V)</span></td></tr>
+          <tr><td>DFS</td><td>Any</td><td>—</td><td>—</td><td>Traversal</td><td><span class="cx cx-g">O(V+E)</span></td><td><span class="cx cx-g">O(V)</span></td></tr>
+          <tr><td>Dijkstra</td><td>Weighted</td><td>Non-negative</td><td>❌</td><td>Single source</td><td><span class="cx cx-b">O(E log V)</span></td><td><span class="cx cx-g">O(V)</span></td></tr>
+          <tr><td>Bellman-Ford</td><td>Weighted</td><td>Any incl. neg.</td><td>✅ detect</td><td>Single source</td><td><span class="cx cx-r">O(VE)</span></td><td><span class="cx cx-g">O(V)</span></td></tr>
+          <tr><td>Floyd-Warshall</td><td>Weighted</td><td>Any incl. neg.</td><td>✅ detect</td><td><strong>All pairs</strong></td><td><span class="cx cx-r">O(V³)</span></td><td><span class="cx cx-r">O(V²)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Theory Qs for graphs -->
+  <div class="igrid igrid-2">
+    <div class="theory-box" style="background:rgba(255,217,61,.05);border-color:var(--sun)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--sun);font-size:14px;margin-bottom:6px">BFS vs DFS — when to use each?</div>
+      <div class="tb-a"><strong>BFS</strong>: when you need the shortest path (unweighted), or want to explore level by level (e.g., social network "degrees of separation").<br><strong>DFS</strong>: when you need to explore all paths (backtracking, maze solving), detect cycles, or perform topological sort.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(255,107,107,.05);border-color:var(--coral)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--coral);font-size:14px;margin-bottom:6px">Why does Floyd-Warshall need O(V³)?</div>
+      <div class="tb-a">It uses 3 nested loops: for every intermediate vertex k, for every source i, for every destination j — check if going through k gives a shorter path. That's V × V × V = V³ operations.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(168,230,207,.05);border-color:var(--mint)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--mint);font-size:14px;margin-bottom:6px">How does Bellman-Ford detect negative cycles?</div>
+      <div class="tb-a">After V-1 relaxations, all shortest paths are finalized (a path has at most V-1 edges). Run one more pass: if any distance can still be reduced, it means there's a cycle that keeps getting shorter — a negative cycle.</div>
+    </div>
+    <div class="theory-box" style="background:rgba(72,219,251,.05);border-color:var(--r4)">
+      <div class="tb-q">Theory Q</div>
+      <div class="icard-title" style="color:var(--r4);font-size:14px;margin-bottom:6px">What is relaxation in shortest path algorithms?</div>
+      <div class="tb-a">Relaxation is the process of checking: "Is the current known distance to vertex v worse than the distance through vertex u?" If dist[u] + weight(u,v) &lt; dist[v], update dist[v]. This is the core operation in Dijkstra, Bellman-Ford, and Floyd-Warshall.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- COMPLEXITY REFERENCE -->
+<section class="sec sec-mid">
+<div class="wrap">
+  <div class="slabel">REFERENCE</div>
+  <h2 class="stitle">Full Complexity <span style="color:var(--teal)">Cheatsheet</span></h2>
+  <div style="overflow-x:auto;border-radius:18px;border:1.5px solid rgba(255,255,255,.08)">
+    <table class="cxtable">
+      <thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Linear Search</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-g">O(1)</span></td><td>—</td><td>Unsorted OK</td></tr>
+        <tr><td>Binary Search</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-g">O(1)</span></td><td>—</td><td>Must be sorted</td></tr>
+        <tr><td>Bubble Sort</td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-g">O(1)</span></td><td>✓</td><td>In-place</td></tr>
+        <tr><td>Selection Sort</td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-g">O(1)</span></td><td>✗</td><td>Min swaps</td></tr>
+        <tr><td>Insertion Sort</td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-r">O(n²)</span></td><td><span class="cx cx-g">O(1)</span></td><td>✓</td><td>Best for ~sorted</td></tr>
+        <tr><td>Merge Sort</td><td><span class="cx cx-b">O(n log n)</span></td><td><span class="cx cx-b">O(n log n)</span></td><td><span class="cx cx-b">O(n log n)</span></td><td><span class="cx cx-y">O(n)</span></td><td>✓</td><td>D&amp;C</td></tr>
+        <tr><td>Heap Sort</td><td><span class="cx cx-b">O(n log n)</span></td><td><span class="cx cx-b">O(n log n)</span></td><td><span class="cx cx-b">O(n log n)</span></td><td><span class="cx cx-g">O(1)</span></td><td>✗</td><td>In-place</td></tr>
+        <tr><td>Counting Sort</td><td><span class="cx cx-g">O(n+k)</span></td><td><span class="cx cx-g">O(n+k)</span></td><td><span class="cx cx-g">O(n+k)</span></td><td><span class="cx cx-y">O(n+k)</span></td><td>✓</td><td>Int only</td></tr>
+        <tr><td>Radix Sort</td><td><span class="cx cx-g">O(d·n)</span></td><td><span class="cx cx-g">O(d·n)</span></td><td><span class="cx cx-g">O(d·n)</span></td><td><span class="cx cx-y">O(n+k)</span></td><td>✓</td><td>d=digits</td></tr>
+        <tr><td>Stack ops</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>Push/Pop/Peek</td></tr>
+        <tr><td>Queue ops</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>Enqueue/Dequeue</td></tr>
+        <tr><td>LL Insert/Del Head</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td>—</td><td>—</td><td>Pointer update</td></tr>
+        <tr><td>LL Search</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>—</td><td>Linear scan</td></tr>
+        <tr><td>Hash (avg)</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>Worst=all same slot</td></tr>
+        <tr><td>BST (balanced)</td><td><span class="cx cx-g">O(1)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-y">O(n)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>Skewed=O(n)</td></tr>
+        <tr><td>AVL Tree</td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>Guaranteed</td></tr>
+        <tr><td>Red-Black Tree</td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-b">O(log n)</span></td><td><span class="cx cx-y">O(n)</span></td><td>—</td><td>2× log n height</td></tr>
+        <tr><td>BFS / DFS</td><td><span class="cx cx-g">O(V+E)</span></td><td><span class="cx cx-g">O(V+E)</span></td><td><span class="cx cx-g">O(V+E)</span></td><td><span class="cx cx-g">O(V)</span></td><td>—</td><td>All graphs</td></tr>
+        <tr><td>Dijkstra</td><td><span class="cx cx-b">O(E log V)</span></td><td><span class="cx cx-b">O(E log V)</span></td><td><span class="cx cx-b">O(E log V)</span></td><td><span class="cx cx-g">O(V)</span></td><td>—</td><td>Non-neg weights</td></tr>
+        <tr><td>Bellman-Ford</td><td><span class="cx cx-r">O(VE)</span></td><td><span class="cx cx-r">O(VE)</span></td><td><span class="cx cx-r">O(VE)</span></td><td><span class="cx cx-g">O(V)</span></td><td>—</td><td>Neg weights OK</td></tr>
+        <tr><td>Floyd-Warshall</td><td><span class="cx cx-r">O(V³)</span></td><td><span class="cx cx-r">O(V³)</span></td><td><span class="cx cx-r">O(V³)</span></td><td><span class="cx cx-r">O(V²)</span></td><td>—</td><td>All pairs</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div style="max-width:1160px;margin:0 auto;position:relative">
+    <div class="footer-title">Data<br>Structures</div>
+    <div class="footer-sub">A complete deep-dive dashboard · 8 topics · All algorithms covered</div>
+    <div class="footer-names">✦ Adylova Ailin &amp; Adinai Temirbekova ✦</div>
+    <div class="footer-date">Computer Science · Presentation Date: 28-04-2026</div>
+    <svg style="position:absolute;bottom:-10px;right:0;width:300px;opacity:.25;" viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+      <path d="M300,160 Q150,-40 0,160" stroke="#FF6B6B" stroke-width="13" fill="none"/>
+      <path d="M300,160 Q150,-20 15,160" stroke="#FF9F43" stroke-width="12" fill="none"/>
+      <path d="M300,160 Q150,0 30,160" stroke="#FECA57" stroke-width="11" fill="none"/>
+      <path d="M300,160 Q150,18 50,160" stroke="#48DBFB" stroke-width="9" fill="none"/>
+      <path d="M300,160 Q150,34 68,160" stroke="#FF9FF3" stroke-width="8" fill="none"/>
+    </svg>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+
+// Stars
+const sEl=document.getElementById('stars');
+for(let i=0;i<90;i++){const s=document.createElement('div'),sz=Math.random()*2.5+.5;s.className='star';s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s`;sEl.appendChild(s);}
+
+// Side nav active
+const tnDots=[...document.querySelectorAll('.tnav-dot')];
+const secs=tnDots.map(d=>document.getElementById(d.dataset.id));
+window.addEventListener('scroll',()=>{let cur2=0;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<window.innerHeight/2)cur2=i;});tnDots.forEach((d,i)=>d.classList.toggle('active',i===cur2));});
+
+// ── SORT VISUALIZER ──
+let sArr=[];
+function initBars(){sArr=Array.from({length:14},()=>Math.floor(Math.random()*90)+10);renderBars();}
+function renderBars(hl=[],sorted=[]){
+  const el=document.getElementById('sortBars');
+  const mx=Math.max(...sArr);
+  el.innerHTML=sArr.map((v,i)=>`<div class="sbar${hl.includes(i)?' cmp':''}${sorted.includes(i)?' sorted':''}" style="height:${v/mx*100}%"><span>${v}</span></div>`).join('');
+}
+async function startSort(type){
+  initBars();let a=[...sArr],n=a.length,swaps=0,comps=0;
+  const upd=(hl,done)=>{sArr=[...a];renderBars(hl,done);return sleep(120);};
+  if(type==='bubble'){
+    const done=new Set();
+    for(let i=0;i<n;i++){for(let j=0;j<n-i-1;j++){comps++;await upd([j,j+1],[...done]);if(a[j]>a[j+1]){[a[j],a[j+1]]=[a[j+1],a[j]];swaps++;await upd([j,j+1],[...done]);}}done.add(n-1-i);}
+  }else if(type==='selection'){
+    const done=new Set();
+    for(let i=0;i<n-1;i++){let mi=i;for(let j=i+1;j<n;j++){comps++;await upd([mi,j],[...done]);if(a[j]<a[mi])mi=j;}if(mi!==i){[a[i],a[mi]]=[a[mi],a[i]];swaps++;}done.add(i);await upd([],[...done]);}
+    done.add(n-1);sArr=[...a];renderBars([],[...done]);
+  }else{
+    const done=new Set([0]);
+    for(let i=1;i<n;i++){let key=a[i],j=i-1;while(j>=0&&a[j]>key){comps++;await upd([j,j+1],[...done]);a[j+1]=a[j];j--;}a[j+1]=key;done.add(i);await upd([],[...done]);}
+  }
+  sArr=[...a];renderBars([],[...Array(n).keys()]);
+  document.getElementById('sortStat').textContent=`Done! ${comps} comparisons, ${swaps} swaps`;
+}
+function resetSortBars(){initBars();document.getElementById('sortStat').textContent='';}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+initBars();
+
+// ── STACK ──
+let stackArr=[];
+function doPush(){const v=document.getElementById('stackIn').value.trim()||String(Math.floor(Math.random()*99)+1);stackArr.push(v);document.getElementById('stackIn').value='';renderStack();}
+function doPop(){if(!stackArr.length)return;const v=stackArr.pop();document.getElementById('stackStat').textContent=`Popped: ${v}`;renderStack();}
+function doStackReset(){stackArr=[];renderStack();}
+function renderStack(){
+  const el=document.getElementById('stackVis');
+  document.getElementById('stackStat').textContent=`Size: ${stackArr.length}${stackArr.length?', TOP: '+stackArr[stackArr.length-1]:''}`;
+  if(!stackArr.length){el.innerHTML='<div class="sv-empty">Stack is empty</div>';return;}
+  el.innerHTML=stackArr.slice().reverse().map((v,i)=>`<div class="sv-item${i===0?' sv-top':''}">${v}${i===0?' ← TOP':''}</div>`).join('');
+}
+renderStack();
+
+// ── RPN ──
+function doRPN(){
+  const toks=document.getElementById('rpnIn').value.trim().split(/\s+/);
+  const st=[],steps=[];
+  for(const t of toks){
+    if(['+','-','*','×','/'].includes(t)){
+      const b=st.pop(),a=st.pop();
+      let r;
+      if(t==='+')r=a+b;else if(t==='-')r=a-b;else if(t==='*'||t==='×')r=a*b;else r=a/b;
+      steps.push(`${a} ${t} ${b} = <strong style="color:var(--mint)">${r}</strong>`);st.push(r);
+    }else st.push(parseFloat(t));
+  }
+  const res=st[0];
+  document.getElementById('rpnOut').innerHTML=isNaN(res)?'<span style="color:var(--coral)">⚠ Invalid</span>':`<span style="color:var(--mint)">= ${res}</span>`;
+  document.getElementById('rpnTrace').innerHTML=steps.map(s=>`<div style="font-family:'Space Mono',monospace;font-size:11px;opacity:.6;margin-top:4px">→ ${s}</div>`).join('');
+}
+
+// ── QUEUE ──
+let qArr=[],qFront=0;
+function doEnqueue(){const v=document.getElementById('qIn').value.trim()||String(Math.floor(Math.random()*99)+1);qArr.push(v);document.getElementById('qIn').value='';renderQ();}
+function doDequeue(){if(!qArr.length)return;const v=qArr.shift();document.getElementById('qStat').textContent=`Dequeued: ${v}`;renderQ();}
+function qReset(){qArr=[];renderQ();}
+function renderQ(){
+  document.getElementById('qStat').textContent=`size:${qArr.length}`;
+  const el=document.getElementById('queueVis');
+  if(!qArr.length){el.innerHTML='<div style="opacity:.3;font-family:\'Space Mono\',monospace;font-size:12px">Queue is empty</div>';return;}
+  el.innerHTML=qArr.map((v,i)=>`<div class="qv-item">${i===0?'FRONT→ ':''}${v}${i===qArr.length-1?' ←REAR':''}</div>`).join('');
+}
+renderQ();
+</script>
+</body>
+</html>
