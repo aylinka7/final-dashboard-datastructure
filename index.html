@@ -225,6 +225,55 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:var(--cream);o
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px;}
 
+/* ── STICKY HEADER ── */
+.sticky-header{
+  position:sticky;top:0;z-index:500;
+  background:rgba(18,18,30,.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:10px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;
+  animation:none;
+}
+.sh-logo{font-family:'Righteous',cursive;font-size:18px;color:var(--sun);white-space:nowrap;}
+.sh-nav{display:flex;gap:2px;flex-wrap:wrap;}
+.sh-nav a{font-family:'Space Mono',monospace;font-size:10px;color:var(--cream);text-decoration:none;padding:5px 10px;border-radius:20px;opacity:.6;transition:.2s;border:1px solid transparent;}
+.sh-nav a:hover{opacity:1;color:var(--sun);border-color:rgba(255,217,61,.3);}
+
+/* ── TREE TYPE CARDS ── */
+.tree-types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+.tt-card{background:#151528;border-radius:16px;padding:18px;border:1.5px solid rgba(255,255,255,.07);position:relative;overflow:hidden;}
+.tt-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;opacity:.5;margin-bottom:8px;text-transform:uppercase;}
+.tt-name{font-family:'Righteous',cursive;font-size:16px;margin-bottom:10px;}
+.tt-desc{font-size:12px;line-height:1.65;opacity:.75;margin-bottom:12px;}
+.tt-svg{display:flex;justify-content:center;padding:6px 0;}
+
+/* ── GRAPH TYPES ── */
+.graph-types-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:28px;}
+
+/* ── BFS/DFS INTERACTIVE ── */
+.traversal-wrap{background:#0A0A14;border-radius:18px;border:1.5px solid rgba(255,255,255,.07);padding:20px;}
+.trav-svg{display:block;width:100%;}
+.trav-log{background:rgba(255,255,255,.03);border-radius:10px;padding:12px;margin-top:10px;font-family:'Space Mono',monospace;font-size:11px;line-height:1.8;min-height:60px;border:1px solid rgba(255,255,255,.05);}
+.trav-step{display:inline-block;padding:2px 8px;border-radius:6px;margin:2px;font-size:11px;font-family:'Space Mono',monospace;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.ts-visit{background:rgba(0,210,211,.2);color:var(--teal);border:1px solid rgba(0,210,211,.3);}
+.ts-queue{background:rgba(255,217,61,.15);color:var(--sun);border:1px solid rgba(255,217,61,.25);}
+.ts-done{background:rgba(168,230,207,.15);color:var(--mint);}
+
+/* speed slider */
+.speed-row{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.speed-row label{font-family:'Space Mono',monospace;font-size:10px;opacity:.5;}
+input[type=range]{accent-color:var(--sun);width:100px;}
+
+@media(max-width:768px){
+  .tree-types-grid{grid-template-columns:1fr 1fr;}
+  .graph-types-grid{grid-template-columns:1fr;}
+  .sticky-header{padding:8px 16px;}
+  .sh-nav a{font-size:9px;padding:4px 7px;}
+}
+
 @media(max-width:768px){
   .igrid-2,.igrid-3,.igrid-4,.rpn-grid,.procon{grid-template-columns:1fr;}
   .topic-nav{display:none;}
@@ -298,6 +347,21 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:var(--cream);o
   <span>Adinai Temirbekova</span><span class="adot">✦</span>
   <span>Data Structures Dashboard · 2026</span>
 </div>
+
+<!-- STICKY NAV -->
+<nav class="sticky-header">
+  <div class="sh-logo">Pure Algorithms</div>
+  <div class="sh-nav">
+    <a href="#sec-search">🔍 Search</a>
+    <a href="#sec-sort">↕️ Sort</a>
+    <a href="#sec-stack">📚 Stack</a>
+    <a href="#sec-queue">🚶 Queue</a>
+    <a href="#sec-ll">🔗 Lists</a>
+    <a href="#sec-hash"># Hash</a>
+    <a href="#sec-trees">🌳 Trees</a>
+    <a href="#sec-graphs">🕸️ Graphs</a>
+  </div>
+</nav>
 
 <!-- PIPE -->
 <div class="pipe">
@@ -1023,8 +1087,233 @@ slot <span class="num">6</span>: [empty]
   <div class="topic-banner" style="background:linear-gradient(135deg,#3D0A2A,#1A0510);border:2px solid rgba(255,159,243,.35)">
     <span class="tb-tag" style="background:rgba(255,159,243,.2);color:var(--r5)">HIERARCHICAL STRUCTURE</span>
     <div class="tb-title" style="color:var(--r5)">Nodes, edges, and balance</div>
-    <div class="tb-desc">A tree is a non-linear data structure of nodes connected by edges with no cycles. Variants differ by <strong>balance guarantees</strong>: BST (no guarantee), AVL (height-balanced), Red-Black (color-balanced). All operations O(log n) in balanced trees.</div>
+    <div class="tb-desc">A tree is a <strong>non-linear</strong> data structure with nodes connected by edges and <em>no cycles</em>. Root is the topmost node, leaves have no children. Depth = distance from root. Height = longest path to leaf.</div>
     <div class="tb-deco">🌳</div>
+  </div>
+
+  <!-- KEY TERMINOLOGY -->
+  <div class="icard" style="border-color:rgba(255,159,243,.2);margin-bottom:28px">
+    <div class="icard-title" style="color:var(--r5)">Key Tree Terminology</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px">
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--r5)">Root</strong><br>Topmost node, no parent</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--teal)">Leaf</strong><br>Node with no children</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--sun)">Height</strong><br>Longest path root→leaf</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--mint)">Depth</strong><br>Distance from root to node</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--lav)">Degree</strong><br>Number of children of node</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--coral)">Subtree</strong><br>Node + all descendants</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--r2)">Sibling</strong><br>Nodes sharing same parent</div>
+      <div style="background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.7"><strong style="color:var(--r4)">Internal</strong><br>Non-leaf node (has children)</div>
+    </div>
+  </div>
+
+  <!-- TREE TYPES -->
+  <div class="slabel" style="text-align:left;margin-bottom:14px">TYPES OF BINARY TREES</div>
+  <div class="tree-types-grid">
+
+    <!-- Full Binary Tree -->
+    <div class="tt-card" style="border-color:rgba(0,210,211,.3)">
+      <div class="tt-label" style="color:var(--teal)">Type 01</div>
+      <div class="tt-name" style="color:var(--teal)">Full Binary Tree</div>
+      <div class="tt-desc">Every node has either <strong>0 or 2 children</strong>. No node has exactly 1 child. Also called "proper" or "strictly" binary tree.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 200 160" style="width:180px">
+          <line x1="100" y1="25" x2="55" y2="75" stroke="rgba(0,210,211,.4)" stroke-width="2"/>
+          <line x1="100" y1="25" x2="145" y2="75" stroke="rgba(0,210,211,.4)" stroke-width="2"/>
+          <line x1="55" y1="75" x2="28" y2="125" stroke="rgba(0,210,211,.4)" stroke-width="2"/>
+          <line x1="55" y1="75" x2="82" y2="125" stroke="rgba(0,210,211,.4)" stroke-width="2"/>
+          <circle cx="100" cy="25" r="16" fill="#0A3A3A" stroke="#00D2D3" stroke-width="2"/>
+          <text x="100" y="31" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="11">A</text>
+          <circle cx="55" cy="75" r="15" fill="#0A3A3A" stroke="#00D2D3" stroke-width="1.5"/>
+          <text x="55" y="81" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="11">B</text>
+          <circle cx="145" cy="75" r="15" fill="#0A3A3A" stroke="rgba(0,210,211,.5)" stroke-width="1.5"/>
+          <text x="145" y="81" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="11">C</text>
+          <circle cx="28" cy="125" r="14" fill="#0A3A3A" stroke="rgba(0,210,211,.4)"/>
+          <text x="28" y="131" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="10">D</text>
+          <circle cx="82" cy="125" r="14" fill="#0A3A3A" stroke="rgba(0,210,211,.4)"/>
+          <text x="82" y="131" text-anchor="middle" fill="#00D2D3" font-family="Space Mono" font-size="10">E</text>
+          <text x="145" y="105" text-anchor="middle" fill="rgba(0,210,211,.4)" font-family="Space Mono" font-size="9">leaf</text>
+          <text x="6" y="148" fill="rgba(0,210,211,.5)" font-family="Space Mono" font-size="8">✓ 0 or 2 children each</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Complete Binary Tree -->
+    <div class="tt-card" style="border-color:rgba(255,217,61,.3)">
+      <div class="tt-label" style="color:var(--sun)">Type 02</div>
+      <div class="tt-name" style="color:var(--sun)">Complete Binary Tree</div>
+      <div class="tt-desc">All levels are <strong>fully filled</strong> except possibly the last, which is filled <strong>left to right</strong>. Used in Heaps.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 200 160" style="width:180px">
+          <line x1="100" y1="25" x2="55" y2="75" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="100" y1="25" x2="145" y2="75" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="55" y1="75" x2="28" y2="125" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="55" y1="75" x2="82" y2="125" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <line x1="145" y1="75" x2="118" y2="125" stroke="rgba(255,217,61,.4)" stroke-width="2"/>
+          <circle cx="100" cy="25" r="16" fill="#2A1E00" stroke="#FFD93D" stroke-width="2"/>
+          <text x="100" y="31" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="11">1</text>
+          <circle cx="55" cy="75" r="15" fill="#2A1E00" stroke="#FFD93D" stroke-width="1.5"/>
+          <text x="55" y="81" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="11">2</text>
+          <circle cx="145" cy="75" r="15" fill="#2A1E00" stroke="rgba(255,217,61,.6)" stroke-width="1.5"/>
+          <text x="145" y="81" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="11">3</text>
+          <circle cx="28" cy="125" r="14" fill="#2A1E00" stroke="rgba(255,217,61,.4)"/>
+          <text x="28" y="131" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="10">4</text>
+          <circle cx="82" cy="125" r="14" fill="#2A1E00" stroke="rgba(255,217,61,.4)"/>
+          <text x="82" y="131" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="10">5</text>
+          <circle cx="118" cy="125" r="14" fill="#2A1E00" stroke="rgba(255,217,61,.4)"/>
+          <text x="118" y="131" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="10">6</text>
+          <text x="172" y="105" fill="rgba(255,217,61,.35)" font-family="Space Mono" font-size="9">missing</text>
+          <text x="4" y="150" fill="rgba(255,217,61,.5)" font-family="Space Mono" font-size="8">✓ Last level fills left→right</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Perfect Binary Tree -->
+    <div class="tt-card" style="border-color:rgba(168,230,207,.3)">
+      <div class="tt-label" style="color:var(--mint)">Type 03</div>
+      <div class="tt-name" style="color:var(--mint)">Perfect Binary Tree</div>
+      <div class="tt-desc"><strong>All internal nodes</strong> have exactly 2 children and <strong>all leaves are at same level</strong>. Total nodes = 2^(h+1) − 1.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 200 160" style="width:180px">
+          <line x1="100" y1="20" x2="55" y2="70" stroke="rgba(168,230,207,.4)" stroke-width="2"/>
+          <line x1="100" y1="20" x2="145" y2="70" stroke="rgba(168,230,207,.4)" stroke-width="2"/>
+          <line x1="55" y1="70" x2="28" y2="120" stroke="rgba(168,230,207,.4)" stroke-width="2"/>
+          <line x1="55" y1="70" x2="82" y2="120" stroke="rgba(168,230,207,.4)" stroke-width="2"/>
+          <line x1="145" y1="70" x2="118" y2="120" stroke="rgba(168,230,207,.4)" stroke-width="2"/>
+          <line x1="145" y1="70" x2="172" y2="120" stroke="rgba(168,230,207,.4)" stroke-width="2"/>
+          <circle cx="100" cy="20" r="16" fill="#0A3025" stroke="#A8E6CF" stroke-width="2"/>
+          <text x="100" y="26" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="11">A</text>
+          <circle cx="55" cy="70" r="15" fill="#0A3025" stroke="#A8E6CF" stroke-width="1.5"/>
+          <text x="55" y="76" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="11">B</text>
+          <circle cx="145" cy="70" r="15" fill="#0A3025" stroke="#A8E6CF" stroke-width="1.5"/>
+          <text x="145" y="76" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="11">C</text>
+          <circle cx="28" cy="120" r="13" fill="#0A3025" stroke="rgba(168,230,207,.5)"/>
+          <text x="28" y="126" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="10">D</text>
+          <circle cx="82" cy="120" r="13" fill="#0A3025" stroke="rgba(168,230,207,.5)"/>
+          <text x="82" y="126" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="10">E</text>
+          <circle cx="118" cy="120" r="13" fill="#0A3025" stroke="rgba(168,230,207,.5)"/>
+          <text x="118" y="126" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="10">F</text>
+          <circle cx="172" cy="120" r="13" fill="#0A3025" stroke="rgba(168,230,207,.5)"/>
+          <text x="172" y="126" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="10">G</text>
+          <text x="4" y="150" fill="rgba(168,230,207,.5)" font-family="Space Mono" font-size="8">✓ All leaves at same depth</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Skewed Tree -->
+    <div class="tt-card" style="border-color:rgba(255,107,107,.3)">
+      <div class="tt-label" style="color:var(--coral)">Type 04</div>
+      <div class="tt-name" style="color:var(--coral)">Skewed (Degenerate) Tree</div>
+      <div class="tt-desc">Every node has only <strong>one child</strong>. Becomes a <em>linked list</em>. BST operations degrade to <strong>O(n)</strong> — worst case for BST.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 200 160" style="width:180px">
+          <line x1="70" y1="20" x2="90" y2="60" stroke="rgba(255,107,107,.4)" stroke-width="2" stroke-dasharray="4,2"/>
+          <line x1="90" y1="65" x2="110" y2="100" stroke="rgba(255,107,107,.4)" stroke-width="2" stroke-dasharray="4,2"/>
+          <line x1="110" y1="105" x2="130" y2="138" stroke="rgba(255,107,107,.4)" stroke-width="2" stroke-dasharray="4,2"/>
+          <circle cx="70" cy="18" r="15" fill="#3A0808" stroke="#FF6B6B" stroke-width="2"/>
+          <text x="70" y="24" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">10</text>
+          <circle cx="90" cy="65" r="14" fill="#2A0505" stroke="rgba(255,107,107,.6)"/>
+          <text x="90" y="71" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="10">20</text>
+          <circle cx="110" cy="105" r="14" fill="#2A0505" stroke="rgba(255,107,107,.5)"/>
+          <text x="110" y="111" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="10">30</text>
+          <circle cx="130" cy="142" r="14" fill="#2A0505" stroke="rgba(255,107,107,.4)"/>
+          <text x="130" y="148" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="10">40</text>
+          <text x="4" y="15" fill="rgba(255,107,107,.5)" font-family="Space Mono" font-size="8">Right-Skewed</text>
+          <text x="4" y="155" fill="rgba(255,107,107,.5)" font-family="Space Mono" font-size="8">⚠ O(n) search — same as linked list</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Binary Tree (general) -->
+    <div class="tt-card" style="border-color:rgba(195,177,225,.3)">
+      <div class="tt-label" style="color:var(--lav)">Type 05</div>
+      <div class="tt-name" style="color:var(--lav)">Binary Tree (General)</div>
+      <div class="tt-desc">Each node has <strong>at most 2 children</strong> (left and right). No ordering constraint. Parent of all tree types discussed here.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 200 160" style="width:180px">
+          <line x1="100" y1="22" x2="55" y2="72" stroke="rgba(195,177,225,.4)" stroke-width="2"/>
+          <line x1="100" y1="22" x2="148" y2="72" stroke="rgba(195,177,225,.4)" stroke-width="2"/>
+          <line x1="55" y1="72" x2="30" y2="122" stroke="rgba(195,177,225,.4)" stroke-width="2"/>
+          <line x1="148" y1="72" x2="148" y2="122" stroke="rgba(195,177,225,.4)" stroke-width="2"/>
+          <circle cx="100" cy="22" r="16" fill="#1A1040" stroke="#C3B1E1" stroke-width="2"/>
+          <text x="100" y="28" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">A</text>
+          <circle cx="55" cy="72" r="15" fill="#140830" stroke="#C3B1E1" stroke-width="1.5"/>
+          <text x="55" y="78" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">B</text>
+          <circle cx="148" cy="72" r="15" fill="#140830" stroke="rgba(195,177,225,.5)" stroke-width="1.5"/>
+          <text x="148" y="78" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">C</text>
+          <circle cx="30" cy="122" r="13" fill="#140830" stroke="rgba(195,177,225,.4)"/>
+          <text x="30" y="128" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="10">D</text>
+          <circle cx="148" cy="122" r="13" fill="#140830" stroke="rgba(195,177,225,.4)"/>
+          <text x="148" y="128" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="10">E</text>
+          <text x="4" y="155" fill="rgba(195,177,225,.5)" font-family="Space Mono" font-size="8">✓ at most 2 children per node</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Balanced Binary Tree -->
+    <div class="tt-card" style="border-color:rgba(255,159,67,.3)">
+      <div class="tt-label" style="color:var(--r2)">Type 06</div>
+      <div class="tt-name" style="color:var(--r2)">Balanced Binary Tree</div>
+      <div class="tt-desc">Height difference between left and right subtrees is <strong>at most 1</strong> for every node. AVL and Red-Black trees enforce this. Guarantees O(log n).</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 200 160" style="width:180px">
+          <line x1="100" y1="22" x2="55" y2="72" stroke="rgba(255,159,67,.4)" stroke-width="2"/>
+          <line x1="100" y1="22" x2="145" y2="72" stroke="rgba(255,159,67,.4)" stroke-width="2"/>
+          <line x1="55" y1="72" x2="30" y2="120" stroke="rgba(255,159,67,.4)" stroke-width="2"/>
+          <line x1="55" y1="72" x2="80" y2="120" stroke="rgba(255,159,67,.4)" stroke-width="2"/>
+          <line x1="145" y1="72" x2="120" y2="120" stroke="rgba(255,159,67,.4)" stroke-width="2"/>
+          <line x1="145" y1="72" x2="170" y2="120" stroke="rgba(255,159,67,.4)" stroke-width="2"/>
+          <circle cx="100" cy="22" r="16" fill="#2A1000" stroke="#FF9F43" stroke-width="2"/>
+          <text x="100" y="28" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="11">15</text>
+          <circle cx="55" cy="72" r="15" fill="#1A0A00" stroke="#FF9F43" stroke-width="1.5"/>
+          <text x="55" y="78" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="11">8</text>
+          <circle cx="145" cy="72" r="15" fill="#1A0A00" stroke="rgba(255,159,67,.6)" stroke-width="1.5"/>
+          <text x="145" y="78" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="11">20</text>
+          <circle cx="30" cy="120" r="12" fill="#1A0A00" stroke="rgba(255,159,67,.4)"/>
+          <text x="30" y="126" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="9">3</text>
+          <circle cx="80" cy="120" r="12" fill="#1A0A00" stroke="rgba(255,159,67,.4)"/>
+          <text x="80" y="126" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="9">11</text>
+          <circle cx="120" cy="120" r="12" fill="#1A0A00" stroke="rgba(255,159,67,.4)"/>
+          <text x="120" y="126" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="9">17</text>
+          <circle cx="170" cy="120" r="12" fill="#1A0A00" stroke="rgba(255,159,67,.4)"/>
+          <text x="170" y="126" text-anchor="middle" fill="#FF9F43" font-family="Space Mono" font-size="9">25</text>
+          <text x="4" y="152" fill="rgba(255,159,67,.5)" font-family="Space Mono" font-size="8">BF every node ∈ {-1, 0, +1}</text>
+        </svg>
+      </div>
+    </div>
+  </div><!-- end tree-types-grid -->
+
+  <!-- ═══ INTERACTIVE TREE TRAVERSAL ═══ -->
+  <div class="slabel" style="text-align:left;margin-bottom:14px">INTERACTIVE TREE TRAVERSAL</div>
+  <div class="icard" style="border-color:rgba(255,159,243,.3);margin-bottom:28px">
+    <div class="icard-title" style="color:var(--r5)">▶ BFS & DFS on Binary Tree — Watch it Live</div>
+    <div class="igrid igrid-2" style="margin-top:12px">
+      <div>
+        <div class="ctrl-row">
+          <button class="btn btn-lav" onclick="treeTraverse('bfs')">🌊 BFS (Level Order)</button>
+          <button class="btn" style="background:var(--r5);color:#1A0510" onclick="treeTraverse('dfs-in')">↩ DFS Inorder</button>
+        </div>
+        <div class="ctrl-row">
+          <button class="btn btn-ghost" onclick="treeTraverse('dfs-pre')">Pre-order</button>
+          <button class="btn btn-ghost" onclick="treeTraverse('dfs-post')">Post-order</button>
+          <button class="btn btn-ghost" onclick="resetTreeViz()">↺ Reset</button>
+        </div>
+        <div class="speed-row">
+          <label>Speed:</label>
+          <input type="range" id="treeSpeed" min="100" max="1000" value="500" style="width:80px">
+          <label id="treeSpeedVal">500ms</label>
+        </div>
+        <div class="trav-log" id="treeLog">Click an algorithm to start...</div>
+        <div style="margin-top:10px;font-size:12px;opacity:.6;line-height:1.7">
+          <strong style="color:var(--teal)">BFS</strong>: uses Queue → visits level by level<br>
+          <strong style="color:var(--r5)">DFS Inorder</strong>: Left→Root→Right → sorted output!<br>
+          <strong style="color:var(--lav)">DFS Preorder</strong>: Root→Left→Right<br>
+          <strong style="color:var(--sun)">DFS Postorder</strong>: Left→Right→Root
+        </div>
+      </div>
+      <div class="traversal-wrap">
+        <svg id="treeTravSvg" viewBox="0 0 340 240" class="trav-svg"></svg>
+      </div>
+    </div>
   </div>
 
   <!-- BST -->
@@ -1213,6 +1502,208 @@ slot <span class="num">6</span>: [empty]
     <div class="tb-title" style="color:var(--r2)">Vertices, edges, and paths</div>
     <div class="tb-desc">A graph G=(V,E) consists of <strong>vertices</strong> (nodes) and <strong>edges</strong> (connections). Graphs model networks, maps, social connections, dependencies. Key representations: <em>Adjacency Matrix</em> O(V²) space, <em>Adjacency List</em> O(V+E) space.</div>
     <div class="tb-deco">🕸️</div>
+  </div>
+
+  <!-- GRAPH TYPES -->
+  <div class="slabel" style="text-align:left;margin-bottom:14px">TYPES OF GRAPHS</div>
+  <div class="graph-types-grid" style="margin-bottom:28px">
+
+    <div class="tt-card" style="border-color:rgba(72,219,251,.3)">
+      <div class="tt-label" style="color:var(--r4)">Type 01</div>
+      <div class="tt-name" style="color:var(--r4)">Undirected Graph</div>
+      <div class="tt-desc">Edges have <strong>no direction</strong>. If A→B exists, B→A also exists. Represented as {A,B}. Social networks, road maps (two-way).</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 220 120" style="width:200px">
+          <line x1="50" y1="60" x2="110" y2="30" stroke="rgba(72,219,251,.5)" stroke-width="2"/>
+          <line x1="50" y1="60" x2="110" y2="90" stroke="rgba(72,219,251,.5)" stroke-width="2"/>
+          <line x1="110" y1="30" x2="170" y2="60" stroke="rgba(72,219,251,.5)" stroke-width="2"/>
+          <line x1="110" y1="90" x2="170" y2="60" stroke="rgba(72,219,251,.5)" stroke-width="2"/>
+          <line x1="110" y1="30" x2="110" y2="90" stroke="rgba(72,219,251,.3)" stroke-width="2"/>
+          <circle cx="50" cy="60" r="18" fill="#0A1A2A" stroke="#48DBFB" stroke-width="2"/>
+          <text x="50" y="66" text-anchor="middle" fill="#48DBFB" font-family="Space Mono" font-size="12">A</text>
+          <circle cx="110" cy="30" r="18" fill="#0A1A2A" stroke="#48DBFB" stroke-width="1.5"/>
+          <text x="110" y="36" text-anchor="middle" fill="#48DBFB" font-family="Space Mono" font-size="12">B</text>
+          <circle cx="110" cy="90" r="18" fill="#0A1A2A" stroke="#48DBFB" stroke-width="1.5"/>
+          <text x="110" y="96" text-anchor="middle" fill="#48DBFB" font-family="Space Mono" font-size="12">C</text>
+          <circle cx="170" cy="60" r="18" fill="#0A1A2A" stroke="#48DBFB" stroke-width="1.5"/>
+          <text x="170" y="66" text-anchor="middle" fill="#48DBFB" font-family="Space Mono" font-size="12">D</text>
+          <text x="6" y="112" fill="rgba(72,219,251,.5)" font-family="Space Mono" font-size="8">↔ bidirectional edges</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tt-card" style="border-color:rgba(255,159,243,.3)">
+      <div class="tt-label" style="color:var(--r5)">Type 02</div>
+      <div class="tt-name" style="color:var(--r5)">Directed Graph (Digraph)</div>
+      <div class="tt-desc">Edges have <strong>direction</strong>. A→B does NOT imply B→A. Used in web links, Twitter follows, dependency graphs.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 220 120" style="width:200px">
+          <defs>
+            <marker id="arrowPink" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#FF9FF3"/>
+            </marker>
+          </defs>
+          <line x1="50" y1="60" x2="100" y2="34" stroke="#FF9FF3" stroke-width="2" marker-end="url(#arrowPink)" opacity=".7"/>
+          <line x1="50" y1="60" x2="100" y2="82" stroke="#FF9FF3" stroke-width="2" marker-end="url(#arrowPink)" opacity=".7"/>
+          <line x1="118" y1="30" x2="152" y2="53" stroke="#FF9FF3" stroke-width="2" marker-end="url(#arrowPink)" opacity=".7"/>
+          <line x1="118" y1="90" x2="152" y2="67" stroke="#FF9FF3" stroke-width="2" marker-end="url(#arrowPink)" opacity=".7"/>
+          <circle cx="50" cy="60" r="18" fill="#2A0A28" stroke="#FF9FF3" stroke-width="2"/>
+          <text x="50" y="66" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="12">A</text>
+          <circle cx="110" cy="30" r="18" fill="#1A0518" stroke="rgba(255,159,243,.6)" stroke-width="1.5"/>
+          <text x="110" y="36" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="12">B</text>
+          <circle cx="110" cy="90" r="18" fill="#1A0518" stroke="rgba(255,159,243,.6)" stroke-width="1.5"/>
+          <text x="110" y="96" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="12">C</text>
+          <circle cx="170" cy="60" r="18" fill="#1A0518" stroke="rgba(255,159,243,.5)" stroke-width="1.5"/>
+          <text x="170" y="66" text-anchor="middle" fill="#FF9FF3" font-family="Space Mono" font-size="12">D</text>
+          <text x="6" y="112" fill="rgba(255,159,243,.5)" font-family="Space Mono" font-size="8">→ one-way edges only</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tt-card" style="border-color:rgba(255,217,61,.3)">
+      <div class="tt-label" style="color:var(--sun)">Type 03</div>
+      <div class="tt-name" style="color:var(--sun)">Weighted Graph</div>
+      <div class="tt-desc">Each edge has a <strong>numeric weight/cost</strong>. Used in GPS maps (distance), network routing (latency). Dijkstra, Bellman-Ford, Floyd-Warshall operate on these.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 220 120" style="width:200px">
+          <line x1="50" y1="60" x2="110" y2="30" stroke="rgba(255,217,61,.5)" stroke-width="2"/>
+          <line x1="50" y1="60" x2="110" y2="90" stroke="rgba(255,217,61,.5)" stroke-width="2"/>
+          <line x1="110" y1="30" x2="170" y2="60" stroke="rgba(255,217,61,.5)" stroke-width="2"/>
+          <line x1="110" y1="90" x2="170" y2="60" stroke="rgba(255,217,61,.5)" stroke-width="2"/>
+          <text x="74" y="34" fill="#FFD93D" font-family="Space Mono" font-size="10" font-weight="700">4</text>
+          <text x="64" y="90" fill="#FFD93D" font-family="Space Mono" font-size="10" font-weight="700">7</text>
+          <text x="142" y="34" fill="#FFD93D" font-family="Space Mono" font-size="10" font-weight="700">2</text>
+          <text x="140" y="90" fill="#FFD93D" font-family="Space Mono" font-size="10" font-weight="700">9</text>
+          <circle cx="50" cy="60" r="18" fill="#2A1E00" stroke="#FFD93D" stroke-width="2"/>
+          <text x="50" y="66" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">A</text>
+          <circle cx="110" cy="30" r="18" fill="#1A1200" stroke="rgba(255,217,61,.6)" stroke-width="1.5"/>
+          <text x="110" y="36" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">B</text>
+          <circle cx="110" cy="90" r="18" fill="#1A1200" stroke="rgba(255,217,61,.6)" stroke-width="1.5"/>
+          <text x="110" y="96" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">C</text>
+          <circle cx="170" cy="60" r="18" fill="#1A1200" stroke="rgba(255,217,61,.5)" stroke-width="1.5"/>
+          <text x="170" y="66" text-anchor="middle" fill="#FFD93D" font-family="Space Mono" font-size="12">D</text>
+          <text x="4" y="112" fill="rgba(255,217,61,.5)" font-family="Space Mono" font-size="8">edge cost = travel weight</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tt-card" style="border-color:rgba(168,230,207,.3)">
+      <div class="tt-label" style="color:var(--mint)">Type 04</div>
+      <div class="tt-name" style="color:var(--mint)">Cyclic Graph</div>
+      <div class="tt-desc">Contains at least <strong>one cycle</strong> — a path that starts and ends at the same vertex. Most real-world graphs (roads, internet) are cyclic.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 220 120" style="width:200px">
+          <polygon points="110,15 185,80 50,80" fill="none" stroke="rgba(168,230,207,.15)" stroke-width="1"/>
+          <line x1="50" y1="80" x2="102" y2="22" stroke="rgba(168,230,207,.5)" stroke-width="2"/>
+          <line x1="110" y1="15" x2="177" y2="72" stroke="rgba(168,230,207,.5)" stroke-width="2"/>
+          <line x1="170" y1="80" x2="58" y2="80" stroke="rgba(168,230,207,.5)" stroke-width="2"/>
+          <circle cx="50" cy="80" r="17" fill="#0A2A1A" stroke="#A8E6CF" stroke-width="2"/>
+          <text x="50" y="86" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="12">A</text>
+          <circle cx="110" cy="15" r="17" fill="#0A2A1A" stroke="#A8E6CF" stroke-width="1.5"/>
+          <text x="110" y="21" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="12">B</text>
+          <circle cx="170" cy="80" r="17" fill="#0A2A1A" stroke="#A8E6CF" stroke-width="1.5"/>
+          <text x="170" y="86" text-anchor="middle" fill="#A8E6CF" font-family="Space Mono" font-size="12">C</text>
+          <text x="55" y="50" fill="rgba(168,230,207,.6)" font-family="Space Mono" font-size="9">cycle: A→B→C→A</text>
+          <text x="4" y="112" fill="rgba(168,230,207,.5)" font-family="Space Mono" font-size="8">⟳ path returns to start</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tt-card" style="border-color:rgba(195,177,225,.3)">
+      <div class="tt-label" style="color:var(--lav)">Type 05</div>
+      <div class="tt-name" style="color:var(--lav)">Acyclic Graph (DAG)</div>
+      <div class="tt-desc">A <strong>Directed Acyclic Graph</strong> has no cycles. Used for task scheduling, compilation order, dependency resolution. Supports topological sort.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 220 120" style="width:200px">
+          <defs>
+            <marker id="arrowLav" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#C3B1E1"/>
+            </marker>
+          </defs>
+          <line x1="30" y1="60" x2="78" y2="38" stroke="#C3B1E1" stroke-width="1.5" marker-end="url(#arrowLav)" opacity=".7"/>
+          <line x1="30" y1="60" x2="78" y2="82" stroke="#C3B1E1" stroke-width="1.5" marker-end="url(#arrowLav)" opacity=".7"/>
+          <line x1="108" y1="30" x2="152" y2="30" stroke="#C3B1E1" stroke-width="1.5" marker-end="url(#arrowLav)" opacity=".7"/>
+          <line x1="108" y1="90" x2="152" y2="58" stroke="#C3B1E1" stroke-width="1.5" marker-end="url(#arrowLav)" opacity=".7"/>
+          <line x1="108" y1="30" x2="152" y2="58" stroke="#C3B1E1" stroke-width="1.5" marker-end="url(#arrowLav)" opacity=".5"/>
+          <circle cx="28" cy="60" r="17" fill="#1A1038" stroke="#C3B1E1" stroke-width="2"/>
+          <text x="28" y="66" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">A</text>
+          <circle cx="92" cy="30" r="15" fill="#120828" stroke="rgba(195,177,225,.6)"/>
+          <text x="92" y="36" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">B</text>
+          <circle cx="92" cy="90" r="15" fill="#120828" stroke="rgba(195,177,225,.6)"/>
+          <text x="92" y="96" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">C</text>
+          <circle cx="165" cy="30" r="15" fill="#120828" stroke="rgba(195,177,225,.4)"/>
+          <text x="165" y="36" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">D</text>
+          <circle cx="165" cy="63" r="15" fill="#120828" stroke="rgba(195,177,225,.4)"/>
+          <text x="165" y="69" text-anchor="middle" fill="#C3B1E1" font-family="Space Mono" font-size="11">E</text>
+          <text x="4" y="112" fill="rgba(195,177,225,.5)" font-family="Space Mono" font-size="8">no cycles → topo sort possible</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tt-card" style="border-color:rgba(255,107,107,.3)">
+      <div class="tt-label" style="color:var(--coral)">Type 06</div>
+      <div class="tt-name" style="color:var(--coral)">Connected vs Disconnected</div>
+      <div class="tt-desc"><strong>Connected</strong>: path exists between every pair. <strong>Disconnected</strong>: some vertices are isolated — no path between them.</div>
+      <div class="tt-svg">
+        <svg viewBox="0 0 220 120" style="width:200px">
+          <!-- Connected component 1 -->
+          <line x1="30" y1="50" x2="80" y2="30" stroke="rgba(255,107,107,.5)" stroke-width="2"/>
+          <line x1="30" y1="50" x2="80" y2="70" stroke="rgba(255,107,107,.5)" stroke-width="2"/>
+          <line x1="80" y1="30" x2="80" y2="70" stroke="rgba(255,107,107,.5)" stroke-width="2"/>
+          <circle cx="30" cy="50" r="16" fill="#2A0808" stroke="#FF6B6B" stroke-width="2"/>
+          <text x="30" y="56" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">A</text>
+          <circle cx="80" cy="30" r="15" fill="#1A0404" stroke="rgba(255,107,107,.6)"/>
+          <text x="80" y="36" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">B</text>
+          <circle cx="80" cy="70" r="15" fill="#1A0404" stroke="rgba(255,107,107,.6)"/>
+          <text x="80" y="76" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">C</text>
+          <!-- Disconnected component 2 -->
+          <line x1="140" y1="40" x2="190" y2="60" stroke="rgba(255,107,107,.5)" stroke-width="2"/>
+          <circle cx="140" cy="38" r="15" fill="#1A0404" stroke="rgba(255,107,107,.4)"/>
+          <text x="140" y="44" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">D</text>
+          <circle cx="192" cy="62" r="15" fill="#1A0404" stroke="rgba(255,107,107,.4)"/>
+          <text x="192" y="68" text-anchor="middle" fill="#FF6B6B" font-family="Space Mono" font-size="11">E</text>
+          <!-- gap indicator -->
+          <line x1="108" y1="50" x2="122" y2="50" stroke="rgba(255,107,107,.2)" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="4" y="110" fill="rgba(255,107,107,.5)" font-family="Space Mono" font-size="8">{A,B,C} and {D,E} are disconnected</text>
+        </svg>
+      </div>
+    </div>
+
+  </div><!-- end graph-types-grid -->
+
+  <!-- INTERACTIVE BFS/DFS ON GRAPH -->
+  <div class="slabel" style="text-align:left;margin-bottom:14px">INTERACTIVE GRAPH TRAVERSAL</div>
+  <div class="icard" style="border-color:rgba(255,159,67,.3);margin-bottom:28px">
+    <div class="icard-title" style="color:var(--r2)">▶ BFS & DFS on Graph — Click to animate</div>
+    <div class="igrid igrid-2" style="margin-top:12px">
+      <div>
+        <div class="ctrl-row">
+          <button class="btn btn-teal" onclick="graphTraverse('bfs')">🌊 BFS</button>
+          <button class="btn btn-coral" onclick="graphTraverse('dfs')">🔽 DFS</button>
+          <button class="btn btn-ghost" onclick="resetGraphViz()">↺ Reset</button>
+        </div>
+        <div class="ctrl-row">
+          <label style="font-family:'Space Mono',monospace;font-size:10px;opacity:.5">Start node:</label>
+          <select id="graphStartNode" class="inp" style="width:70px;padding:6px 10px;font-size:12px">
+            <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option>
+          </select>
+        </div>
+        <div class="speed-row">
+          <label>Speed:</label>
+          <input type="range" id="graphSpeed" min="100" max="1200" value="600">
+          <label id="graphSpeedVal">600ms</label>
+        </div>
+        <div class="trav-log" id="graphLog">Select BFS or DFS and watch the traversal...</div>
+        <div style="margin-top:10px;background:#0A0A14;border-radius:10px;padding:12px;font-size:12px;line-height:1.8">
+          <strong style="color:var(--teal)">BFS uses Queue:</strong> visits neighbors first, then their neighbors<br>
+          <strong style="color:var(--coral)">DFS uses Stack:</strong> goes as deep as possible before backtracking<br>
+          <span style="opacity:.5;font-size:11px">Orange edges = traversal path • Yellow = current node • Green = visited</span>
+        </div>
+      </div>
+      <div class="traversal-wrap">
+        <svg id="graphTravSvg" viewBox="0 0 340 260" class="trav-svg"></svg>
+      </div>
+    </div>
   </div>
 
   <!-- Representations -->
@@ -1637,6 +2128,257 @@ function renderQ(){
   el.innerHTML=qArr.map((v,i)=>`<div class="qv-item">${i===0?'FRONT→ ':''}${v}${i===qArr.length-1?' ←REAR':''}</div>`).join('');
 }
 renderQ();
+
+// ── SPEED SLIDERS ──
+document.getElementById('treeSpeed').addEventListener('input',function(){document.getElementById('treeSpeedVal').textContent=this.value+'ms';});
+document.getElementById('graphSpeed').addEventListener('input',function(){document.getElementById('graphSpeedVal').textContent=this.value+'ms';});
+
+// ═══════════════════════════════════════
+// TREE TRAVERSAL VISUALIZER
+// ═══════════════════════════════════════
+const TREE_NODES = [
+  {id:'50',x:170,y:30,left:'30',right:'70'},
+  {id:'30',x:90,y:90,left:'20',right:'40'},
+  {id:'70',x:250,y:90,left:'60',right:'80'},
+  {id:'20',x:50,y:155,left:null,right:null},
+  {id:'40',x:130,y:155,left:null,right:null},
+  {id:'60',x:210,y:155,left:null,right:null},
+  {id:'80',x:290,y:155,left:null,right:null},
+];
+const TREE_MAP = {};
+TREE_NODES.forEach(n=>TREE_MAP[n.id]=n);
+
+function drawTree(highlighted={},visited=new Set()){
+  const svg=document.getElementById('treeTravSvg');
+  svg.innerHTML='';
+  // Edges
+  TREE_NODES.forEach(n=>{
+    ['left','right'].forEach(side=>{
+      if(n[side]){
+        const c=TREE_MAP[n[side]];
+        const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+        ln.setAttribute('x1',n.x);ln.setAttribute('y1',n.y);
+        ln.setAttribute('x2',c.x);ln.setAttribute('y2',c.y);
+        ln.setAttribute('stroke',visited.has(c.id)?'rgba(255,159,243,.6)':'rgba(255,255,255,.15)');
+        ln.setAttribute('stroke-width','2');
+        svg.appendChild(ln);
+      }
+    });
+  });
+  // Nodes
+  TREE_NODES.forEach(n=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x);c.setAttribute('cy',n.y);c.setAttribute('r','20');
+    let fill='#1A0518',stroke='rgba(255,159,243,.3)',sw='1.5';
+    if(highlighted.current===n.id){fill='#FFD93D';stroke='#FFD93D';sw='3';}
+    else if(visited.has(n.id)){fill='rgba(168,230,207,.25)';stroke='#A8E6CF';sw='2';}
+    c.setAttribute('fill',fill);c.setAttribute('stroke',stroke);c.setAttribute('stroke-width',sw);
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',n.x);t.setAttribute('y',n.y+5);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill',highlighted.current===n.id?'#1A1A2E':visited.has(n.id)?'#A8E6CF':'#FF9FF3');
+    t.setAttribute('font-family','Space Mono');t.setAttribute('font-size','11');t.setAttribute('font-weight','700');
+    t.textContent=n.id;
+    g.appendChild(c);g.appendChild(t);svg.appendChild(g);
+  });
+}
+drawTree();
+
+let travRunning=false;
+async function treeTraverse(type){
+  if(travRunning)return;
+  travRunning=true;
+  resetTreeViz(false);
+  const spd=parseInt(document.getElementById('treeSpeed').value);
+  const log=document.getElementById('treeLog');
+  log.innerHTML='';
+  const visited=new Set();
+  const order=[];
+
+  const addStep=(id,color='ts-visit')=>{
+    const sp=document.createElement('span');
+    sp.className=`trav-step ${color}`;
+    sp.textContent=id;
+    log.appendChild(sp);
+  };
+
+  if(type==='bfs'){
+    const queue=['50'];
+    while(queue.length){
+      const cur=queue.shift();
+      visited.add(cur);
+      order.push(cur);
+      drawTree({current:cur},visited);
+      addStep(cur,'ts-visit');
+      await sleep(spd);
+      const node=TREE_MAP[cur];
+      if(node.left&&!visited.has(node.left)){queue.push(node.left);addStep(node.left,'ts-queue');}
+      if(node.right&&!visited.has(node.right)){queue.push(node.right);addStep(node.right,'ts-queue');}
+    }
+  } else {
+    const stack=[];
+    async function dfs(id){
+      if(!id||visited.has(id))return;
+      if(type==='dfs-pre'){
+        visited.add(id);order.push(id);
+        drawTree({current:id},visited);
+        addStep(id,'ts-visit');
+        await sleep(spd);
+        await dfs(TREE_MAP[id].left);
+        await dfs(TREE_MAP[id].right);
+      } else if(type==='dfs-in'){
+        await dfs(TREE_MAP[id].left);
+        visited.add(id);order.push(id);
+        drawTree({current:id},visited);
+        addStep(id,'ts-visit');
+        await sleep(spd);
+        await dfs(TREE_MAP[id].right);
+      } else {
+        await dfs(TREE_MAP[id].left);
+        await dfs(TREE_MAP[id].right);
+        visited.add(id);order.push(id);
+        drawTree({current:id},visited);
+        addStep(id,'ts-visit');
+        await sleep(spd);
+      }
+    }
+    await dfs('50');
+  }
+  drawTree({},visited);
+  const resultSpan=document.createElement('div');
+  resultSpan.style.cssText='margin-top:8px;font-size:11px;color:var(--mint);font-family:Space Mono,monospace';
+  resultSpan.textContent='Order: '+order.join(' → ');
+  log.appendChild(resultSpan);
+  travRunning=false;
+}
+
+function resetTreeViz(redraw=true){
+  travRunning=false;
+  if(redraw)drawTree();
+  const log=document.getElementById('treeLog');
+  if(redraw)log.innerHTML='Click an algorithm to start...';
+}
+
+// ═══════════════════════════════════════
+// GRAPH TRAVERSAL VISUALIZER
+// ═══════════════════════════════════════
+const GRAPH_NODES_VIZ = {
+  A:{x:60,y:130},B:{x:140,y:50},C:{x:140,y:210},
+  D:{x:230,y:90},E:{x:230,y:170},F:{x:300,y:130}
+};
+const GRAPH_EDGES_VIZ = [
+  ['A','B'],['A','C'],['B','D'],['B','E'],
+  ['C','E'],['D','F'],['E','F'],['C','D']
+];
+const GRAPH_ADJ = {A:['B','C'],B:['A','D','E'],C:['A','E','D'],D:['B','C','F'],E:['B','C','F'],F:['D','E']};
+
+function drawGraph(current='',visited=new Set(),pathEdges=[]){
+  const svg=document.getElementById('graphTravSvg');
+  svg.innerHTML='';
+  // defs for arrow
+  svg.innerHTML=`<defs><marker id="arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="rgba(255,255,255,.3)"/></marker></defs>`;
+
+  GRAPH_EDGES_VIZ.forEach(([a,b])=>{
+    const na=GRAPH_NODES_VIZ[a],nb=GRAPH_NODES_VIZ[b];
+    const isPath=pathEdges.some(([x,y])=>(x===a&&y===b)||(x===b&&y===a));
+    const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1',na.x);ln.setAttribute('y1',na.y);
+    ln.setAttribute('x2',nb.x);ln.setAttribute('y2',nb.y);
+    ln.setAttribute('stroke',isPath?'#FF9F43':'rgba(255,255,255,.12)');
+    ln.setAttribute('stroke-width',isPath?'3':'1.5');
+    svg.appendChild(ln);
+  });
+
+  Object.entries(GRAPH_NODES_VIZ).forEach(([id,pos])=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',pos.x);c.setAttribute('cy',pos.y);c.setAttribute('r','22');
+    let fill='#1A1200',stroke='rgba(255,159,67,.3)',sw='1.5';
+    if(id===current){fill='#FFD93D';stroke='#FFD93D';sw='3';}
+    else if(visited.has(id)){fill='rgba(168,230,207,.2)';stroke='#A8E6CF';sw='2';}
+    c.setAttribute('fill',fill);c.setAttribute('stroke',stroke);c.setAttribute('stroke-width',sw);
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',pos.x);t.setAttribute('y',pos.y+5);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill',id===current?'#1A1A2E':visited.has(id)?'#A8E6CF':'#FF9F43');
+    t.setAttribute('font-family','Space Mono');t.setAttribute('font-size','13');t.setAttribute('font-weight','700');
+    t.textContent=id;
+    g.appendChild(c);g.appendChild(t);svg.appendChild(g);
+  });
+}
+drawGraph();
+
+let graphRunning=false;
+async function graphTraverse(type){
+  if(graphRunning)return;
+  graphRunning=true;
+  const start=document.getElementById('graphStartNode').value;
+  const spd=parseInt(document.getElementById('graphSpeed').value);
+  const log=document.getElementById('graphLog');
+  log.innerHTML='';
+  const visited=new Set();
+  const pathEdges=[];
+  const order=[];
+
+  const addStep=(id,color='ts-visit')=>{
+    const sp=document.createElement('span');
+    sp.className=`trav-step ${color}`;
+    sp.textContent=id;
+    log.appendChild(sp);
+  };
+
+  if(type==='bfs'){
+    const queue=[start];
+    visited.add(start);
+    while(queue.length){
+      const cur=queue.shift();
+      order.push(cur);
+      drawGraph(cur,visited,pathEdges);
+      addStep(cur,'ts-visit');
+      await sleep(spd);
+      for(const nb of GRAPH_ADJ[cur]||[]){
+        if(!visited.has(nb)){
+          visited.add(nb);
+          pathEdges.push([cur,nb]);
+          queue.push(nb);
+          addStep(nb,'ts-queue');
+          drawGraph(cur,visited,pathEdges);
+          await sleep(spd/3);
+        }
+      }
+    }
+  } else {
+    const dfsStack=[start];
+    while(dfsStack.length){
+      const cur=dfsStack.pop();
+      if(visited.has(cur))continue;
+      visited.add(cur);
+      order.push(cur);
+      drawGraph(cur,visited,pathEdges);
+      addStep(cur,'ts-visit');
+      await sleep(spd);
+      for(const nb of [...(GRAPH_ADJ[cur]||[])].reverse()){
+        if(!visited.has(nb)){
+          pathEdges.push([cur,nb]);
+          dfsStack.push(nb);
+        }
+      }
+    }
+  }
+  drawGraph('',visited,pathEdges);
+  const res=document.createElement('div');
+  res.style.cssText='margin-top:8px;font-size:11px;color:var(--mint);font-family:Space Mono,monospace';
+  res.textContent=type.toUpperCase()+' from '+start+': '+order.join(' → ');
+  log.appendChild(res);
+  graphRunning=false;
+}
+
+function resetGraphViz(){
+  graphRunning=false;
+  drawGraph();
+  document.getElementById('graphLog').innerHTML='Select BFS or DFS and watch the traversal...';
+}
 </script>
 </body>
 </html>
